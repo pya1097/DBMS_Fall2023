@@ -1,4 +1,8 @@
 import java.sql.*;
+import java.util.Scanner;
+import java.util.*;
+import MenuOfOperations;
+
 
 public class WolfParkingSystem {
 	static private Connection connection = null;
@@ -71,13 +75,62 @@ public class WolfParkingSystem {
 		}
 		
 	}
+
+	public static void welcomeMenu() throws SQLException {
+		String line = "*".repeat(120);
+		MenuOfOperations menu = new MenuOfOperations();
+		String choiceNumber;
+		Scanner scanner = new Scanner(System.in);
+		String menuMessage = "\n\n" + line + "\n\n\t\t\tWelcome to Operations Menu:\n\n" + line;
+
+        while (true){
+			System.out.println(menuMessage);
+			System.out.println("(1) Display Operations Related to Information Processing.");
+			System.out.println("(2) Display Operations Related to Maintaining Permits and Vehicle Information of Drivers.");
+			System.out.println("(3) Display Operations Related to Generating and Maintaining Citations.");
+			System.out.println("(4) Display Operations Related to Reports.");
+			System.out.println("(0) Exit the Menu.");
+			System.out.print("\n Select your choice: ");
+			
+			choiceNumber = scanner.nextLine();
+			System.out.println("\n Selected Choice: " + choiceNumber);
+        	
+			
+			switch(choiceNumber) {
+				case "0":
+					System.out.println("\nSelected to Exit. Closing all associated connections, safely. Good bye!!!\n");
+					scanner.close();
+					closeConnection();
+					System.exit(0);
+					break;
+				case "1":
+					menu.displayInformationProcessingOperations();
+					break;
+				case "2":
+					menu.displayMaintanenceOperationsOfPermitsAndVehicles();
+					break;
+				case "3":
+					menu.displayCitationOperations();
+					break;
+				case "4":
+					menu.displayReportOperations();
+					break;
+				default:
+					System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
+					break;
+			}
+
+		} 	
+	}
+		
+
 	
 	public static void main(String[] args) throws SQLException {
 		welcomePrompt();
 		initialize();
+		welcomeMenu();
 		closeConnection();
     }
 		
-	
 
 }
