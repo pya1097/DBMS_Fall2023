@@ -7,9 +7,7 @@ import MenuOfOperations;
 public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;
-	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jkteluku";
-	static private String userName = "jkteluku";
-    static private String passWord = "200477972";
+	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/smashet";
     
 	public static void welcomePrompt() {
 		String projectName = "CSC 540 Project Demo: Wolf Parking Management System";
@@ -42,10 +40,8 @@ public class WolfParkingSystem {
 		}
 	}
 	
-	private static void connectToDatabase() throws SQLException {
+	private static void connectToDatabase() throws ClassNotFoundException,SQLException {
 		/*
-		 * Took the inspiration from HW2 Work
-		 * with regard to Connecting to Databases.
 		 * 
 		 * Description: This method helps in connecting to
 		 * the Database System of the Course
@@ -55,24 +51,15 @@ public class WolfParkingSystem {
 		 * 
 		 */
 		
-        System.out.println("URL, Username, Password are configured...");
-
-        try {
-            connection = DriverManager.getConnection(url, userName, passWord);
-            stmt = connection.createStatement();
-            System.out.println("Connected to the database...");
-            // Need to Drop the Tables here.
+		Class.forName("org.mariadb.jdbc.Driver");
+        String user = "smashet";
+        String password = "200536263";
+        connection = DriverManager.getConnection(url, user, password);
+        stmt = connection.createStatement();
             	
-        } catch (SQLException error) {
-        	System.err.println("Failure in Connecting to the Database...");
-        	error.printStackTrace();
-        } finally {
-        	close();
-        }
-        
 	}
 	
-	private static void initialize() throws SQLException {
+	private static void initialize() {
 		/*
 		 * Description: Initializes the Connection to Database.
 		 * 
@@ -82,7 +69,7 @@ public class WolfParkingSystem {
 			connectToDatabase();
 			// Add the DDL/DML Commands for Tables and Data.
 			initDBTables();
-		} catch (SQLException error) {
+		} catch (Exception error) {
 			error.printStackTrace();
 		}
 		
@@ -165,7 +152,7 @@ public class WolfParkingSystem {
 					+ "	'U', 'V', 'W', 'X', 'Y', 'Z', 'AS', 'BS', 'CS', 'DS',\n"
 					+ "	'ES', 'FS', 'GS', 'HS', 'JS', 'KS', 'LS', 'MS', 'NS', 'OS',\n"
 					+ "	'PS', 'QS', 'RS', 'SS', 'TS', 'US', 'VS', 'WS', 'XS',\n"
-					+ "	'YS', 'ZS', 'V'),\n"
+					+ "	'YS', 'ZS'),\n"
 					+ "  SpaceType ENUM('Electric', 'Handicap', 'Regular', 'Compact') DEFAULT 'Regular',\n"
 					+ "  StartDate Date NOT NULL,\n"
 					+ "  ExpirationDate Date NOT NULL,\n"
@@ -221,7 +208,7 @@ public class WolfParkingSystem {
 					+ "	'U', 'V', 'W', 'X', 'Y', 'Z', 'AS', 'BS', 'CS', 'DS',\n"
 					+ "	'ES', 'FS', 'GS', 'HS', 'JS', 'KS', 'LS', 'MS', 'NS', 'OS',\n"
 					+ "	'PS', 'QS', 'RS', 'SS', 'TS', 'US', 'VS', 'WS', 'XS',\n"
-					+ "	'YS', 'ZS', 'V'),\n"
+					+ "	'YS', 'ZS'),\n"
 					+ "  SpaceNumber int,\n"
 					+ "  SpaceType ENUM('Electric', 'Handicap', 'Regular', 'Compact') DEFAULT 'Regular',\n"
 					+ "  PermitID int,\n"
