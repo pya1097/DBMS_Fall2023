@@ -6,7 +6,7 @@ public class MenuOfOperations {
     String menuMessage = "Choose Operations for";
     Scanner scanner = new Scanner(System.in);
 
-    public int displayInformationProcessingOperations() {
+    public void displayInformationProcessingOperations() {
         while (true) {
         	System.out.println("\n\n" + line + menuMessage + " Information Processing " + line);
             System.out.println("(0)  Return to Main Menu.");
@@ -30,9 +30,7 @@ public class MenuOfOperations {
             switch(choiceNumber) {
                 case 0:
                     System.out.println("\nGoing Back to the Main Menu..\n");
-                    
-                    scanner.close();
-                    return 0;
+                    return;
                 case 1:
                     //addParkingLot(ParkingLotID,Name,Address) 
                     break;
@@ -98,7 +96,6 @@ public class MenuOfOperations {
             switch(choiceNumber) {
                 case "0":
                     // System.out.println("\nGoing Back to the Main Menu..\n");
-                    scanner.close();
                     return;
                 case "1":
                     // issuePermit(ParkingLotID, ZoneID, SpaceType, CarLicenseNumber, StartDate, ExpirationDate, ExpirationTime, UniversityID, PhoneNumber, PermitType, DriverName, Status)
@@ -150,7 +147,6 @@ public class MenuOfOperations {
             switch(choiceNumber) {
                 case 0:
                     System.out.println("\nGoing Back to the Main Menu..\n");
-                    scanner.close();
                     return;
                 case 1:
                     // addCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue) 
@@ -205,7 +201,6 @@ public class MenuOfOperations {
             switch(choiceNumber) {
                 case 0:
                     System.out.println("\nGoing Back to the Main Menu..\n");
-                    scanner.close();
                     return;
                 case 1:
                     // addCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue) 
