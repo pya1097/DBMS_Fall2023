@@ -35,11 +35,10 @@ public class MenuOfOperations {
                     InformationProcessingOperations.addParkingLot(connection, statement); 
                     break;
                 case 2:
-                    System.out.println("\nAdding Zone..\n");
                     InformationProcessingOperations.addZone(connection, statement);
                     break;
                 case 3:
-                    //addSpace(ParkingLotID, ZoneID, SpaceNumber,SpaceType, AvailabilityStatus?)
+                	InformationProcessingOperations.addSpace(connection, statement);
                     break;
                 case 4:
                     // addSpace(ParkingLotID, ZoneID, SpaceNumber,SpaceType, AvailabilityStatus?)
