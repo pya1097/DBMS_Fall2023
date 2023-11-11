@@ -1,14 +1,14 @@
 import java.sql.*;
 import java.util.Scanner;
-import java.util.*;
-import MenuOfOperations;
+// import java.util.*;
+// import MenuOfOperations;
 
 
 public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;
 	static Scanner scanner;
-	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/smashet";
+	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jkteluku";
     
 	public static void welcomePrompt() {
 		String projectName = "CSC 540 Project Demo: Wolf Parking Management System";
@@ -53,8 +53,8 @@ public class WolfParkingSystem {
 		 */
 		
 		Class.forName("org.mariadb.jdbc.Driver");
-        String user = "smashet";
-        String password = "200536263";
+        String user = "jkteluku";
+        String password = "200477972";
         connection = DriverManager.getConnection(url, user, password);
         stmt = connection.createStatement();
             	
@@ -69,7 +69,7 @@ public class WolfParkingSystem {
 		try {
 			connectToDatabase();
 			// Add the DDL/DML Commands for Tables and Data.
-			//initDBTables();
+			// initDBTables();
 			 scanner = new Scanner(System.in);
 		} catch (Exception error) {
 			error.printStackTrace();
@@ -79,9 +79,9 @@ public class WolfParkingSystem {
 	
 	private static void prepareDB() {
 	    try {
-			stmt.executeUpdate("DROP DATABASE smashet;");
-			stmt.executeUpdate("CREATE DATABASE smashet;");
-			stmt.executeUpdate("USE smashet;");
+			stmt.executeUpdate("DROP DATABASE jkteluku;");
+			stmt.executeUpdate("CREATE DATABASE jkteluku;");
+			stmt.executeUpdate("USE jkteluku;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -382,7 +382,7 @@ public class WolfParkingSystem {
 					System.exit(0);
 					break;
 				case "1":
-					menu.displayInformationProcessingOperations();
+					menu.displayInformationProcessingOperations(connection, stmt);
 					break;
 				case "2":
 					menu.displayMaintanenceOperationsOfPermitsAndVehicles();

@@ -1,12 +1,12 @@
-
 import java.util.Scanner;
+import java.sql.*;
 
 public class MenuOfOperations {
     String line = "----------";
     String menuMessage = "Choose Operations for";
     Scanner scanner = new Scanner(System.in);
 
-    public void displayInformationProcessingOperations() {
+    public void displayInformationProcessingOperations(Connection connection, Statement statement) {
         while (true) {
         	System.out.println("\n\n" + line + menuMessage + " Information Processing " + line);
             System.out.println("(0)  Return to Main Menu.");
@@ -32,7 +32,7 @@ public class MenuOfOperations {
                     System.out.println("\nGoing Back to the Main Menu..\n");
                     return;
                 case 1:
-                    //addParkingLot(ParkingLotID,Name,Address) 
+                    InformationProcessingOperations.addParkingLot(connection, statement); 
                     break;
                 case 2:
                     //addZone(ParkingLotID,ZoneID)
