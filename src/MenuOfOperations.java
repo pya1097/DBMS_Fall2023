@@ -44,7 +44,7 @@ public class MenuOfOperations {
                     InformationProcessingOperations.addDriver(connection, statement);
                     break;
                 case 5:
-                    // updateParkingLot(ParkingLotID, Name, Address)
+                    InformationProcessingOperations.updateParkingLot(connection, statement);
                     break;
                 case 6:
                     // updateZone(ParkingLotID,ZoneID)

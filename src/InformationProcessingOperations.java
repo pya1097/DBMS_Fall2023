@@ -4,7 +4,12 @@ import java.sql.*;
 
 public class InformationProcessingOperations {
 	private static PreparedStatement finalQuery = null;
-
+	
+	public static final String updateParkingLotNameQuery = "UPDATE ParkingLot SET Name = ? WHERE ParkingLotID = ?";
+    public static final String updateParkingLotAddressQuery  = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
+    
+    
+    
     public static void addParkingLot(Connection connection, Statement statement) {
     	try {
         	String query = "INSERT INTO ParkingLot (ParkingLotID, Name, Address) VALUES (?, ?, ?)";
@@ -159,6 +164,57 @@ public class InformationProcessingOperations {
         }
     }
 
-    
+    public static void updateParkingLot(Connection connection, Statement statement) {
+    	try {
+            Scanner scanner = new Scanner(System.in);
+            
+            System.out.println("You are updating a Parking Lot..");
+            System.out.println("Specify the Parking Lot ID for Updating: ");
+            String parkingLotID = scanner.nextLine();
+            System.out.println("Specify what information you'd like to update for the given Parking Lot ID - Choose Option: ");
+            System.out.println("(A) Name of the Parking Lot.");
+            System.out.println("(B) Address of the Parking Lot.");
+            String parkingLotChoice = scanner.nextLine();
+            System.out.println("Specify the desired value to update for Selected Option: ");
+            String updatedValue = scanner.nextLine();
+            String query;
+            switch (parkingLotChoice) {
+                case "A":
+                    query = updateParkingLotNameQuery;
+                    break;
+                case "B":
+                    query = updateParkingLotAddressQuery;
+                    break;
+                default:
+                    System.out.println("Choose appropriate options only. Try again..");
+                    throw new IllegalArgumentException("Invalid Choice is Selected: " + parkingLotChoice);
+            }
+
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setInt(2, Integer.parseInt(parkingLotID));
+                finalQuery.setString(1, updatedValue);
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Parking Lot is Updated Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in updateParkingLot Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (IllegalArgumentException argumentError) {
+            System.out.println(argumentError.getMessage());
+            System.out.println("Invalid attribute given to update..Choose and Try Again!!!");
+        } catch (Exception error) {
+            System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
+        } 
+    }
 
 }
+
+
