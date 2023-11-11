@@ -88,7 +88,8 @@ public class InformationProcessingOperations {
             String spaceType = scanner.nextLine();
             System.out.println("Specify the Space Number you want to add: ");
             String spaceNumber = scanner.nextLine();
-            System.out.println("Specify the Availability Status (Y, N or Optional): ");
+            System.out.println("Specify the Availability Status (Y, N or Optional - Simply press Enter without entering any value): ");
+            // If user does not want to pass anything, then length will remain zero. So, based on that we can add the check on Optional Param.
             String availabilityStatus = "";
             availabilityStatus = scanner.nextLine();
        
