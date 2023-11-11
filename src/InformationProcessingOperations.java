@@ -118,6 +118,47 @@ public class InformationProcessingOperations {
         }
     }
 
+    public static void addDriver(Connection connection, Statement statement) {
+        /*
+         * TODO: This method should be overloaded for dependent operations.
+         *       For example - IssuePermit Will need to call addDriver and add details.
+         *       Needed for such cases. Coordinate with Owner of Operations 2.
+         */
+    	try {
+        	String query = "INSERT INTO Driver (DriverID,Status,DriverName) VALUES (?, ?, ?)";
+            Scanner scanner = new Scanner(System.in);
+ 
+            System.out.println("You are adding a Driver Details into the System..");
+            System.out.println("If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");
+            String driverID = scanner.nextLine();
+            System.out.println("Specify the Status of the Driver (V, E, S): ");
+            String driverStatus = scanner.nextLine();
+            System.out.println("Specify the Driver Name: ");
+            String driverName = scanner.nextLine();
+       
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setString(1, driverID);
+                finalQuery.setString(2, driverStatus);
+                finalQuery.setString(3, driverName);
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Driver Details are Added Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in addDriver Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (Exception e) {
+            System.out.println("Issue in addDriver Operation. Hardware/Inputs are malformed..");
+        }
+    }
+
     
 
 }

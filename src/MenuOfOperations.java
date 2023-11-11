@@ -41,7 +41,7 @@ public class MenuOfOperations {
                 	InformationProcessingOperations.addSpace(connection, statement);
                     break;
                 case 4:
-                    // addSpace(ParkingLotID, ZoneID, SpaceNumber,SpaceType, AvailabilityStatus?)
+                    InformationProcessingOperations.addDriver(connection, statement);
                     break;
                 case 5:
                     // updateParkingLot(ParkingLotID, Name, Address)

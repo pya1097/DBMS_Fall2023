@@ -289,7 +289,7 @@ public class WolfParkingSystem {
 					+ "('122765234','S', 'Sachin Tendulkar'),\n"
 					+ "('9194789124','V', 'Charles Xavier');");
 			
-			stmt.executeUpdate("insert into Owns(CarLicenseNumber,DriverID)\n"
+			stmt.executeUpdate("INSERT INTO Owns(CarLicenseNumber,DriverID)\n"
 					+ "values\n"
 					+ "('SBF','7729119111'),\n"
 					+ "('Clay1','266399121'),\n"
@@ -306,7 +306,7 @@ public class WolfParkingSystem {
 					+ "(5,'Residential',2,'AS', 'Compact Car','2022-01-01', '2023-09-30', '06:00:00'),\n"
 					+ "(6,'Special event',1,'V', 'Handicap','2023-01-01', '2023-11-15', '06:00:00');");
 			
-			stmt.executeUpdate("insert into Associated (ParkingLotID,ZoneID,SpaceType,SpaceNumber,PermitID) values\n"
+			stmt.executeUpdate("INSERT INTO Associated (ParkingLotID,ZoneID,SpaceType,SpaceNumber,PermitID) values\n"
 					+ "(1, 'A', 'Electric', 1, 2),\n"
 					+ "(1, 'A', 'Regular', 1, 3),\n"
 					+ "(1, 'A', 'Regular', 2, 4),\n"
