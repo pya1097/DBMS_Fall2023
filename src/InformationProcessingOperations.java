@@ -10,13 +10,12 @@ public class InformationProcessingOperations {
         	String query = "INSERT INTO ParkingLot (ParkingLotID, Name, Address) VALUES (?, ?, ?)";
             Scanner scanner = new Scanner(System.in);
             
- 
             System.out.println("You are adding a Parking Lot..");
-            System.out.println("Enter Parking Lot ID: ");
+            System.out.println("Specify the Parking Lot ID: ");
             String parkingLotID = scanner.nextLine();
-            System.out.println("Enter Parking Lot Name: ");
+            System.out.println("Specify the Parking Lot Name: ");
             String parkingLotName = scanner.nextLine();
-            System.out.println("Enter Parking Lot Address: ");
+            System.out.println("Specify the Parking Lot Address: ");
             String parkingLotAddress = scanner.nextLine();
        
             try {
@@ -27,7 +26,7 @@ public class InformationProcessingOperations {
                 finalQuery.setString(3, parkingLotAddress);
                 finalQuery.executeUpdate();
                 connection.commit();
-                System.out.println("ParkingLot is Added Successfully!!");
+                System.out.println("Parking Lot is Added Successfully!!");
             } catch (SQLException error) {
                 System.out.println(error.getMessage());
                 System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
@@ -35,12 +34,46 @@ public class InformationProcessingOperations {
                 System.out.println("Rollback Complete!");
             } finally {
                 connection.setAutoCommit(true);
-                //scanner.close();
             }
     		
     	} catch (Exception e) {
             System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
         }
     }
+
+    public static void addZone(Connection connection, Statement statement) {
+    	try {
+        	String query = "INSERT INTO Zone (ParkingLotID, ZoneID) VALUES (?, ?)";
+            Scanner scanner = new Scanner(System.in);
+ 
+            System.out.println("You are adding a Zone to a Parking Lot..");
+            System.out.println("Specify the Parking Lot ID where you intend to add a Zone: ");
+            String parkingLotID = scanner.nextLine();
+            System.out.println("Specify the Zone: ");
+            String zoneID = scanner.nextLine();
+       
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setInt(1, Integer.parseInt(parkingLotID));
+                finalQuery.setString(2, zoneID);
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Zone is Added Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in addZone Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (Exception e) {
+            System.out.println("Issue in addZone Operation. Hardware/Inputs are malformed..");
+        }
+    }
+
+    
 
 }
