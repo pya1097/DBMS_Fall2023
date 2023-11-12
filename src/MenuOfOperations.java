@@ -50,7 +50,7 @@ public class MenuOfOperations {
                 //    InformationProcessingOperations.updateZone(connection, statement);
                 //    break;
                 case 6:
-                    // updateSpace(ParkingLotID, ZoneID, SpaceNumber, SpaceType, AvailabilityStatus?)
+                    InformationProcessingOperations.updateSpace(connection, statement);
                     break;
                 case 7:
                     // updateDriverInfo(PhoneNumber, DriverName?, Status?, UniversityID?)

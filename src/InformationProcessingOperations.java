@@ -6,7 +6,9 @@ public class InformationProcessingOperations {
 	private static PreparedStatement finalQuery = null;
 	
 	public static final String updateParkingLotNameQuery = "UPDATE ParkingLot SET Name = ? WHERE ParkingLotID = ?";
-    public static final String updateParkingLotAddressQuery  = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
+    public static final String updateParkingLotAddressQuery = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
+    public static final String updateSpaceNumberQuery = "UPDATE Space SET SpaceNumber = ? WHERE ParkingLotID = ? AND ZoneID = ? AND SpaceType = ? AND SpaceNumber = ?";
+    public static final String updateSpaceTypeQuery = "UPDATE Space SET SpaceType = ? WHERE ParkingLotID = ? AND ZoneID = ? AND SpaceType = ?";
     // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
@@ -216,6 +218,89 @@ public class InformationProcessingOperations {
         } 
     }
 
+    public static void updateSpace(Connection connection, Statement statement) {
+        /*
+         * TODO: This method should be overloaded for dependent operations.
+         *       For example - Car Entering Scenario will need to call Associated to fetch the available space, 
+         *       generate parking space number. For the space number, we should update the availablity status.
+         */
+        
+    	try {
+            Scanner scanner = new Scanner(System.in);
+            String query;
+            System.out.println("You are updating the Space in a Parking Lot..");
+            System.out.println("Specify the Parking Lot ID for the update: ");
+            String parkingLotID = scanner.nextLine();
+            System.out.println("Specify the associated Zone ID for the update: ");
+            String zoneID = scanner.nextLine();
+            System.out.println("Specify what information you'd like to update for the given Parking Lot and Zone - Choose Option: ");
+            System.out.println("(A) Space Type of Space in the Zone.");
+            System.out.println("(B) Space Number of Space in the Zone.");
+            String spaceChoice = scanner.nextLine();
+
+            try {
+            	connection.setAutoCommit(false);
+
+                switch (spaceChoice) {
+                    case "A":
+                        System.out.println("Specify the Space Type which you'd like to update: ");
+                        String oldSpaceType = scanner.nextLine();
+                        System.out.println("Specify the desired Space Type to update: ");
+                        String newSpaceType = scanner.nextLine();
+
+                        query = updateSpaceTypeQuery;
+                        finalQuery = connection.prepareStatement(query);
+                        finalQuery.setString(1, newSpaceType);
+                        finalQuery.setInt(2, Integer.parseInt(parkingLotID));
+                        finalQuery.setString(3, zoneID);
+                        finalQuery.setString(4, oldSpaceType);
+                        break;
+
+                    case "B":
+                        System.out.println("Specify the Space Type which you'd like to update: ");
+                        String spaceType = scanner.nextLine();
+                        System.out.println("Specify the Space Number you'd like to update: ");
+                        String oldSpaceNumber = scanner.nextLine();
+                        System.out.println("Specify the desired Space Number to update: ");
+                        String newSpaceNumber = scanner.nextLine();
+
+                        query = updateSpaceNumberQuery;
+                        finalQuery = connection.prepareStatement(query);
+                        finalQuery.setInt(1, Integer.parseInt(newSpaceNumber));
+                        finalQuery.setInt(2, Integer.parseInt(parkingLotID));
+                        finalQuery.setString(3, zoneID);
+                        finalQuery.setString(4, spaceType);
+                        finalQuery.setInt(5, Integer.parseInt(oldSpaceNumber));
+                        break;
+
+                    default:
+                        System.out.println("Choose appropriate options only. Try again..");
+                        throw new IllegalArgumentException("Invalid Choice is Selected: " + spaceChoice);
+                }
+
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Space is Updated Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in updateSpace Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (IllegalArgumentException argumentError) {
+            System.out.println(argumentError.getMessage());
+            System.out.println("Invalid attribute given to update..Choose and Try Again!!!");
+        } catch (Exception error) {
+            System.out.println("Issue in updateSpace Operation. Hardware/Inputs are malformed..");
+        } 
+    }
+
+    
+
+
     /**
     Note: I believe updateZone() does not make sense because ParkingLotID and ZoneID both are primary key.
     It would give issues when you have the ParkingLotID, ZoneID is in Permit Table. Example Error:
@@ -259,7 +344,7 @@ public class InformationProcessingOperations {
      * 
      */
 
-     
+
 
 }
 
