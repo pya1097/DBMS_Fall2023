@@ -56,7 +56,7 @@ public class MenuOfOperations {
                     InformationProcessingOperations.updateDriverInfo(connection, statement);
                     break;
                 case 8:
-                    // deleteParkingLot(ParkingLotID)
+                    InformationProcessingOperations.deleteParkingLot(connection, statement);                    
                     break;
                 case 9:
                     // deleteZone(ParkingLotID,ZoneID)

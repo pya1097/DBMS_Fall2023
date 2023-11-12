@@ -11,6 +11,7 @@ public class InformationProcessingOperations {
     public static final String updateSpaceTypeQuery = "UPDATE Space SET SpaceType = ? WHERE ParkingLotID = ? AND ZoneID = ? AND SpaceType = ?";
     public static final String updateDriverInfoNameQuery = "UPDATE Driver SET DriverName = ? WHERE DriverID = ?";
     public static final String updateDriverInfoStatusQuery = "UPDATE Driver SET Status = ? WHERE DriverID = ?";
+    public static final String deleteParkingLotQuery = "DELETE FROM ParkingLot WHERE ParkingLotID = ?";
     // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
@@ -355,7 +356,35 @@ public class InformationProcessingOperations {
         } 
     } 
 
-    
+    public static void deleteParkingLot(Connection connection, Statement statement) {
+    	try {
+        	String query = deleteParkingLotQuery;
+            Scanner scanner = new Scanner(System.in);
+            
+            System.out.println("You are deleting a Parking Lot..");
+            System.out.println("Specify the Parking Lot ID to be deleted: ");
+            String parkingLotID = scanner.nextLine();
+            
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setInt(1, Integer.parseInt(parkingLotID));
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Parking Lot is Deleted Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in deleteParkingLot Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (Exception e) {
+            System.out.println("Issue in deleteParkingLot Operation. Hardware/Inputs are malformed..");
+        }
+    }
 
 
     /**
