@@ -65,7 +65,7 @@ public class MenuOfOperations {
                 	InformationProcessingOperations.deleteSpace(connection, statement);
                     break;
                 case 11:
-                    // delete driver(PhoneNumber)
+                    InformationProcessingOperations.deleteDriver(connection, statement);
                     break;
                 default:
                     System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");

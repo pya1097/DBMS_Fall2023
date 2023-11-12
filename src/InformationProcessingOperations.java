@@ -4,6 +4,10 @@ import java.sql.*;
 
 public class InformationProcessingOperations {
 	private static PreparedStatement finalQuery = null;
+	private static PreparedStatement finalSelectPermitIDToDeleteQuery = null;
+	private static PreparedStatement finalDeleteDriverQuery = null;
+	private static PreparedStatement  finalDeletePermitQuery = null;
+    private static ResultSet result = null;
 	
 	public static final String updateParkingLotNameQuery = "UPDATE ParkingLot SET Name = ? WHERE ParkingLotID = ?";
     public static final String updateParkingLotAddressQuery = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
@@ -15,7 +19,9 @@ public class InformationProcessingOperations {
     public static final String deleteZoneQuery = "DELETE FROM Zone WHERE ParkingLotID = ? AND ZoneID = ?";
     public static final String deleteSpaceTypeQuery = "DELETE FROM Space WHERE ParkingLotID = ? AND ZoneID = ? and SpaceType = ?";
     public static final String deleteSpaceNumberQuery = "DELETE FROM Space WHERE ParkingLotID = ? AND ZoneID = ? and SpaceType = ? AND SpaceNumber = ?";
-    
+    public static final String deleteDriverQuery = "DELETE FROM Driver WHERE DriverID = ?";
+    public static final String deletePermitQuery = "DELETE FROM Permit WHERE PermitID = ?";
+    public static final String selectPermitIDToDeleteQuery = "SELECT PermitID FROM Holds WHERE DriverID =?";
     // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
@@ -490,6 +496,54 @@ public class InformationProcessingOperations {
         } catch (Exception error) {
             System.out.println("Issue in deleteSpace Operation. Hardware/Inputs are malformed..");
         } 
+    }
+
+    public static void deleteDriver(Connection connection, Statement statement) {
+    	try {
+            String permitID = null;
+            Scanner scanner = new Scanner(System.in);
+ 
+            System.out.println("You are deleting a Driver from the System..");
+            System.out.println("Delete the Driver. If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");
+            String driverID = scanner.nextLine();
+       
+            try {
+            	finalSelectPermitIDToDeleteQuery = connection.prepareStatement(selectPermitIDToDeleteQuery);
+            	finalSelectPermitIDToDeleteQuery.setString(1, driverID);
+                result = finalSelectPermitIDToDeleteQuery.executeQuery();
+                
+                if (result.next()) {
+                	permitID = result.getString("PermitID");
+                }
+                
+
+                System.out.println("Permit ID for the given Driver ID from the System is: " + permitID);
+                
+                connection.setAutoCommit(false);
+
+                finalDeleteDriverQuery = connection.prepareStatement(deleteDriverQuery);
+                finalDeleteDriverQuery.setString(1, driverID);
+                finalDeleteDriverQuery.executeUpdate();
+                System.out.println("Driver Details are deleted from Driver Successfully!!");
+                finalDeletePermitQuery = connection.prepareStatement(deletePermitQuery);
+                finalDeletePermitQuery.setString(1, permitID);
+                finalDeletePermitQuery.executeUpdate();
+                System.out.println("Driver Details are deleted from Permit Successfully!!");
+
+                connection.commit();
+                
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in deleteDriver Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (Exception e) {
+            System.out.println("Issue in deleteDriver Operation. Hardware/Inputs are malformed..");
+        }
     }
 
     /**
