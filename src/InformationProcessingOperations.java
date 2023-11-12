@@ -7,6 +7,7 @@ public class InformationProcessingOperations {
 	
 	public static final String updateParkingLotNameQuery = "UPDATE ParkingLot SET Name = ? WHERE ParkingLotID = ?";
     public static final String updateParkingLotAddressQuery  = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
+    // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
     
@@ -211,9 +212,54 @@ public class InformationProcessingOperations {
             System.out.println(argumentError.getMessage());
             System.out.println("Invalid attribute given to update..Choose and Try Again!!!");
         } catch (Exception error) {
-            System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
+            System.out.println("Issue in updateParkingLot Operation. Hardware/Inputs are malformed..");
         } 
     }
+
+    /**
+    Note: I believe updateZone() does not make sense because ParkingLotID and ZoneID both are primary key.
+    It would give issues when you have the ParkingLotID, ZoneID is in Permit Table. Example Error:
+    (conn=55621) Cannot add or update a child row: a foreign key constraint fails (`jkteluku`.`Permit`, CONSTRAINT `Permit_ibfk_1` FOREIGN KEY (`ParkingLotID`, `ZoneID`) REFERENCES `Zone` (`ParkingLotID`, `ZoneID`) ON DELETE CASCADE ON UPDATE CASCADE)
+
+    public static void updateZone(Connection connection, Statement statement) {
+    	try {
+            Scanner scanner = new Scanner(System.in);
+            
+            System.out.println("You are updating the Zone in a Parking Lot..");
+            System.out.println("Specify the ParkingLotID for the update: ");
+            String parkingLotID = scanner.nextLine();
+            System.out.println("Specify the ZoneID for the update: ");
+            String zoneID = scanner.nextLine();
+            System.out.println("Specify the desired value to update for ZoneID: ");
+            String newZoneID = scanner.nextLine();
+            String query = updateZoneIDQuery;
+
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setString(1, newZoneID);
+                finalQuery.setInt(2, Integer.parseInt(parkingLotID));
+                finalQuery.setString(3, zoneID);
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Zone is Updated Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in updateZone Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (Exception error) {
+            System.out.println("Issue in updateZone Operation. Hardware/Inputs are malformed..");
+        } 
+    }
+     * 
+     */
+
+     
 
 }
 

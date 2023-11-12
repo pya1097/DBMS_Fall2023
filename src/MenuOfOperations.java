@@ -15,13 +15,13 @@ public class MenuOfOperations {
             System.out.println("(3)  Add a Space.");
             System.out.println("(4)  Add a Driver.");
             System.out.println("(5)  Update a Parking Lot.");
-            System.out.println("(6)  Update a Zone.");
-            System.out.println("(7)  Update a Space.");
-            System.out.println("(8)  Update a Driver.");
-            System.out.println("(9)  Delete a Parking Lot.");
-            System.out.println("(10) Delete a Zone.");
-            System.out.println("(11) Delete a Space.");
-            System.out.println("(12) Delete a Driver.");
+            // System.out.println("(6)  Update a Zone.");
+            System.out.println("(6)  Update a Space.");
+            System.out.println("(7)  Update a Driver.");
+            System.out.println("(8)  Delete a Parking Lot.");
+            System.out.println("(9) Delete a Zone.");
+            System.out.println("(10) Delete a Space.");
+            System.out.println("(11) Delete a Driver.");
             System.out.print("\n\n Select your choice: \t");
             
             int choiceNumber = scanner.nextInt();
@@ -46,25 +46,25 @@ public class MenuOfOperations {
                 case 5:
                     InformationProcessingOperations.updateParkingLot(connection, statement);
                     break;
+                // case 6:
+                //    InformationProcessingOperations.updateZone(connection, statement);
+                //    break;
                 case 6:
-                    // updateZone(ParkingLotID,ZoneID)
-                    break;
-                case 7:
                     // updateSpace(ParkingLotID, ZoneID, SpaceNumber, SpaceType, AvailabilityStatus?)
                     break;
-                case 8:
+                case 7:
                     // updateDriverInfo(PhoneNumber, DriverName?, Status?, UniversityID?)
                     break;
-                case 9:
+                case 8:
                     // deleteParkingLot(ParkingLotID)
                     break;
-                case 10:
+                case 9:
                     // deleteZone(ParkingLotID,ZoneID)
                     break;
-                case 11:
+                case 10:
                     // delete space(ParkingLotID,ZoneID,SpaceNumber)
                     break;
-                case 12:
+                case 11:
                     // delete driver(PhoneNumber)
                     break;
                 default:
