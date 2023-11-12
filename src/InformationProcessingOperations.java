@@ -12,6 +12,7 @@ public class InformationProcessingOperations {
     public static final String updateDriverInfoNameQuery = "UPDATE Driver SET DriverName = ? WHERE DriverID = ?";
     public static final String updateDriverInfoStatusQuery = "UPDATE Driver SET Status = ? WHERE DriverID = ?";
     public static final String deleteParkingLotQuery = "DELETE FROM ParkingLot WHERE ParkingLotID = ?";
+    public static final String deleteZoneQuery = "DELETE FROM Zone WHERE ParkingLotID = ? AND ZoneID = ?";
     // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
@@ -386,6 +387,38 @@ public class InformationProcessingOperations {
         }
     }
 
+    public static void deleteZone(Connection connection, Statement statement) {
+    	try {
+        	String query = deleteZoneQuery;
+            Scanner scanner = new Scanner(System.in);
+            
+            System.out.println("You are deleting a Zone in the Parking Lot..");
+            System.out.println("Specify the Parking Lot ID in which Zone to be deleted: ");
+            String parkingLotID = scanner.nextLine();
+            System.out.println("Specify the Zone ID to be deleted: ");
+            String zoneID = scanner.nextLine();
+            
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setInt(1, Integer.parseInt(parkingLotID));
+                finalQuery.setString(2, zoneID);
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Zone is Deleted Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in deleteZone Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (Exception e) {
+            System.out.println("Issue in deleteZone Operation. Hardware/Inputs are malformed..");
+        }
+    }
 
     /**
     Note: I believe updateZone() does not make sense because ParkingLotID and ZoneID both are primary key.
