@@ -13,6 +13,9 @@ public class InformationProcessingOperations {
     public static final String updateDriverInfoStatusQuery = "UPDATE Driver SET Status = ? WHERE DriverID = ?";
     public static final String deleteParkingLotQuery = "DELETE FROM ParkingLot WHERE ParkingLotID = ?";
     public static final String deleteZoneQuery = "DELETE FROM Zone WHERE ParkingLotID = ? AND ZoneID = ?";
+    public static final String deleteSpaceTypeQuery = "DELETE FROM Space WHERE ParkingLotID = ? AND ZoneID = ? and SpaceType = ?";
+    public static final String deleteSpaceNumberQuery = "DELETE FROM Space WHERE ParkingLotID = ? AND ZoneID = ? and SpaceType = ? AND SpaceNumber = ?";
+    
     // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
@@ -96,7 +99,7 @@ public class InformationProcessingOperations {
             String parkingLotID = scanner.nextLine();
             System.out.println("Specify the associated Zone ID where you intend to add the Space: ");
             String zoneID = scanner.nextLine();
-            System.out.println("Specify the Space Type you want to add (Electric, Regular, Compact Car, Handicap, Regular): ");
+            System.out.println("Specify the Space Type you want to add (Electric, Regular, Compact Car, Handicap): ");
             String spaceType = scanner.nextLine();
             System.out.println("Specify the Space Number you want to add: ");
             String spaceNumber = scanner.nextLine();
@@ -418,6 +421,75 @@ public class InformationProcessingOperations {
     	} catch (Exception e) {
             System.out.println("Issue in deleteZone Operation. Hardware/Inputs are malformed..");
         }
+    }
+
+    public static void deleteSpace(Connection connection, Statement statement) {
+    	try {
+        	String query;
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("You are deleting a Space in the Zone of a Parking Lot..");
+            System.out.println("Specify the Parking Lot ID in which Space is to be deleted: ");
+            String parkingLotID = scanner.nextLine();
+            System.out.println("Specify the associated Zone ID in which Space is to be deleted: ");
+            String zoneID = scanner.nextLine();
+            System.out.println("Specify what you'd like to update for the given Parking Lot and Zone - Choose Option: ");
+            System.out.println("(A) Space Type in the Zone.");
+            System.out.println("(B) Space Number in the Zone.");
+            String spaceChoice = scanner.nextLine();
+            String spaceType;
+            
+            try {
+            	connection.setAutoCommit(false);
+
+                switch (spaceChoice) {
+                    case "A":
+                        System.out.println("Specify the Space Type which you'd like to delete (Electric, Regular, Compact Car, Handicap): ");
+                        spaceType = scanner.nextLine();
+
+                        query = deleteSpaceTypeQuery;
+                        finalQuery = connection.prepareStatement(query);
+                        finalQuery.setInt(1, Integer.parseInt(parkingLotID));
+                        finalQuery.setString(2, zoneID);
+                        finalQuery.setString(3, spaceType);
+                        break;
+
+                    case "B":
+                        System.out.println("Specify the Space Type which you'd like to delete (Electric, Regular, Compact Car, Handicap): ");
+                        spaceType = scanner.nextLine();
+                        System.out.println("Specify the Space Number you'd like to delete: ");
+                        String spaceNumber = scanner.nextLine();
+
+                        query = deleteSpaceNumberQuery;
+                        finalQuery = connection.prepareStatement(query);
+                        finalQuery.setInt(1, Integer.parseInt(parkingLotID));
+                        finalQuery.setString(2, zoneID);
+                        finalQuery.setString(3, spaceType);
+                        finalQuery.setInt(4, Integer.parseInt(spaceNumber));
+                        break;
+
+                    default:
+                        System.out.println("Choose appropriate options only. Try again..");
+                        throw new IllegalArgumentException("Invalid Choice is Selected: " + spaceChoice);
+                }
+
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Space is deleted Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in deleteSpace Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (IllegalArgumentException argumentError) {
+            System.out.println(argumentError.getMessage());
+            System.out.println("Invalid attribute given to update..Choose and Try Again!!!");
+        } catch (Exception error) {
+            System.out.println("Issue in deleteSpace Operation. Hardware/Inputs are malformed..");
+        } 
     }
 
     /**

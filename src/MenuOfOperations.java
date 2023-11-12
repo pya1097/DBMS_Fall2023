@@ -62,7 +62,7 @@ public class MenuOfOperations {
                     InformationProcessingOperations.deleteZone(connection, statement);
                     break;
                 case 10:
-                    // delete space(ParkingLotID,ZoneID,SpaceNumber)
+                	InformationProcessingOperations.deleteSpace(connection, statement);
                     break;
                 case 11:
                     // delete driver(PhoneNumber)
