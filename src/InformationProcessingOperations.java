@@ -9,6 +9,8 @@ public class InformationProcessingOperations {
     public static final String updateParkingLotAddressQuery = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
     public static final String updateSpaceNumberQuery = "UPDATE Space SET SpaceNumber = ? WHERE ParkingLotID = ? AND ZoneID = ? AND SpaceType = ? AND SpaceNumber = ?";
     public static final String updateSpaceTypeQuery = "UPDATE Space SET SpaceType = ? WHERE ParkingLotID = ? AND ZoneID = ? AND SpaceType = ?";
+    public static final String updateDriverInfoNameQuery = "UPDATE Driver SET DriverName = ? WHERE DriverID = ?";
+    public static final String updateDriverInfoStatusQuery = "UPDATE Driver SET Status = ? WHERE DriverID = ?";
     // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
     
     
@@ -297,6 +299,61 @@ public class InformationProcessingOperations {
             System.out.println("Issue in updateSpace Operation. Hardware/Inputs are malformed..");
         } 
     }
+
+    public static void updateDriverInfo(Connection connection, Statement statement) {
+        /**
+         * TODO: Discuss with team on what else would be update when we update Status. This is catastrophic operation
+         *       as it might involve updating Permit details too. Although, I don't see any concern.
+         */
+    	try {
+            Scanner scanner = new Scanner(System.in);
+            
+            System.out.println("You are updating a Driver Information..");
+            System.out.println("Specify the Driver ID for the update: ");
+            String driverID = scanner.nextLine();
+            System.out.println("Specify what information you'd like to update for the given Driver ID - Choose Option: ");
+            System.out.println("(A) Name of the Driver.");
+            System.out.println("(B) Status of the Driver (Critical Operation).");
+            String driverUpdateChoice = scanner.nextLine();
+            System.out.println("Specify the desired value to update for Selected Option: ");
+            String updatedValue = scanner.nextLine();
+            String query;
+            switch (driverUpdateChoice) {
+                case "A":
+                    query = updateDriverInfoNameQuery;
+                    break;
+                case "B":
+                    query = updateDriverInfoStatusQuery;
+                    break;
+                default:
+                    System.out.println("Choose appropriate options only. Try again..");
+                    throw new IllegalArgumentException("Invalid Choice is Selected: " + driverUpdateChoice);
+            }
+
+            try {
+            	connection.setAutoCommit(false);
+            	finalQuery = connection.prepareStatement(query);
+                finalQuery.setString(2, driverID);
+                finalQuery.setString(1, updatedValue);
+                finalQuery.executeUpdate();
+                connection.commit();
+                System.out.println("Driver Information is Updated Successfully!!");
+            } catch (SQLException error) {
+                System.out.println(error.getMessage());
+                System.out.println("Issue in updateDriverInfo Operation. Hardware/Inputs are malformed..");
+                connection.rollback();
+                System.out.println("Rollback Complete!");
+            } finally {
+                connection.setAutoCommit(true);
+            }
+    		
+    	} catch (IllegalArgumentException argumentError) {
+            System.out.println(argumentError.getMessage());
+            System.out.println("Invalid attribute given to update..Choose and Try Again!!!");
+        } catch (Exception error) {
+            System.out.println("Issue in updateDriverInfo Operation. Hardware/Inputs are malformed..");
+        } 
+    } 
 
     
 

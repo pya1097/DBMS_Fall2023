@@ -53,7 +53,7 @@ public class MenuOfOperations {
                     InformationProcessingOperations.updateSpace(connection, statement);
                     break;
                 case 7:
-                    // updateDriverInfo(PhoneNumber, DriverName?, Status?, UniversityID?)
+                    InformationProcessingOperations.updateDriverInfo(connection, statement);
                     break;
                 case 8:
                     // deleteParkingLot(ParkingLotID)
