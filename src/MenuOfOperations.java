@@ -76,7 +76,7 @@ public class MenuOfOperations {
 
     }
 
-    public void displayMaintanenceOperationsOfPermitsAndVehicles() {
+    public void displayMaintanenceOperationsOfPermitsAndVehicles(Connection connection, Statement stmt) {
         scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n\n" + line + menuMessage + " Maintaining Permits and Vehicle Information of Drivers " + line);
@@ -94,34 +94,43 @@ public class MenuOfOperations {
             String choiceNumber = scanner.nextLine().strip();
 
             switch(choiceNumber) {
-                case "0":
-                    // System.out.println("\nGoing Back to the Main Menu..\n");
-                    return;
-                case "1":
-                    // issuePermit(ParkingLotID, ZoneID, SpaceType, CarLicenseNumber, StartDate, ExpirationDate, ExpirationTime, UniversityID, PhoneNumber, PermitType, DriverName, Status)
-                    break;
-                case "2":
-                    // updatePermit(PermitID, ParkingLotID?, ZoneID?, SpaceType?, CarLicenseNumber?, StartDate?, ExpirationDate?, ExpirationTime?, PermitType?)
-                    break;
-                case "3":
-                    // deletePermit(PermitID)
-                    break;
-                case "4":
-                    // addVehicle(PermitID, CarLicenseNumber)
-                    break;
-                case "5":
-                    // updateVehicle(PermitID, CarLicenseNumber)
-                    break;
-                case "6":
-                    // deleteVehicle(PermitID, CarLicenseNumber)
-                    break;
-                case "7":
-                    // addVehicleToExisistingPermit(PermitID, CarLicenseNumber)
-                    break;
-                default:
-                    System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
-                    break;
-            }
+            
+            case "0":
+                System.out.println("\nGoing Back to the Main Menu..\n");
+                return;
+            case "1":
+                // issuePermit(ParkingLotID, ZoneID, SpaceType, CarLicenseNumber, StartDate, ExpirationDate, ExpirationTime, UniversityID, PhoneNumber, PermitType, DriverName, Status)
+                PermitsVehiclesHelper.issuePermit(connection, stmt);
+            	break;
+            case "2":
+                // updatePermit(PermitID, ParkingLotID?, ZoneID?, SpaceType?, CarLicenseNumber?, StartDate?, ExpirationDate?, ExpirationTime?, PermitType?)
+            	PermitsVehiclesHelper.updatePermit(connection, stmt);
+            	break;
+            case "3":
+                // deletePermit(PermitID)
+            	PermitsVehiclesHelper.deletePermit(connection, stmt);
+                break;
+            case "4":
+                // addVehicle(PermitID, CarLicenseNumber)
+            	PermitsVehiclesHelper.addVehicle(connection,stmt);
+                break;
+            case "5":
+                // updateVehicle(PermitID, CarLicenseNumber)
+            	PermitsVehiclesHelper.updateVehicle(connection,stmt);
+                break;
+            case "6":
+                // deleteVehicle(PermitID, CarLicenseNumber)
+            	PermitsVehiclesHelper.deleteVehicle(connection,stmt);
+                break;
+            case "7":
+                // addVehicleToExistingPermit(PermitID, CarLicenseNumber)
+            	PermitsVehiclesHelper.addVehcileToExistingPermit(connection,stmt);
+                break;
+            default:
+                System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
+                break;
+        }
+
 
         }
         

@@ -32,6 +32,7 @@ public class InformationProcessingOperations {
             Scanner scanner = new Scanner(System.in);
             
             System.out.println("You are adding a Parking Lot..");
+            // isnt this auto increment?
             System.out.println("Specify the Parking Lot ID: ");
             String parkingLotID = scanner.nextLine();
             System.out.println("Specify the Parking Lot Name: ");
@@ -146,12 +147,25 @@ public class InformationProcessingOperations {
          *       Needed for such cases. Coordinate with Owner of Operations 2.
          */
     	try {
-        	String query = "INSERT INTO Driver (DriverID,Status,DriverName) VALUES (?, ?, ?)";
+        	
             Scanner scanner = new Scanner(System.in);
  
             System.out.println("You are adding a Driver Details into the System..");
             System.out.println("If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");
             String driverID = scanner.nextLine();
+            addGivenDriver(connection, statement, driverID);
+            
+    		
+    	} catch (Exception e) {
+            System.out.println("Issue in addDriver Operation. Hardware/Inputs are malformed..");
+        }
+    }
+    
+    public static void addGivenDriver(Connection connection, Statement statement, String driverID) {
+    	try {
+        	String query = "INSERT INTO Driver (DriverID,Status,DriverName) VALUES (?, ?, ?)";
+            Scanner scanner = new Scanner(System.in);
+ 
             System.out.println("Specify the Status of the Driver (V, E, S): ");
             String driverStatus = scanner.nextLine();
             System.out.println("Specify the Driver Name: ");
