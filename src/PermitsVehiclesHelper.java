@@ -173,32 +173,29 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void addToOwns(Connection connection, String carLicenseNumber,String driverID) {
-		try {
+		
 			query = "INSERT INTO Owns (CarLicenseNUmber, DriverID) VALUES (?,?);";
 			try {
-            	connection.setAutoCommit(false);
+            	//connection.setAutoCommit(false);
             	addToOwnsQuery = connection.prepareStatement(query);
             	addToOwnsQuery.setString(1, carLicenseNumber);
             	addToOwnsQuery.setString(2, driverID);
             	addToOwnsQuery.executeUpdate();
-                connection.commit();
-                System.out.println("Added to Owns succesfully..");
+                //connection.commit();
+                //System.out.println("Added to Owns succesfully..");
             }catch(SQLException error) {
             	System.out.println(error.getMessage());
                 System.out.println("Issue in addToOwns Operation. Hardware/Inputs are malformed..");
-                connection.rollback();
+                //connection.rollback();
                 System.out.println("Rollback Complete!");
             }finally {
-            	connection.setAutoCommit(true);
+            	//connection.setAutoCommit(true);
             }
-		}catch(SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public static void addToGiven(Connection connection, Integer permitID, String carLicenseNumber) {
-		try {
+		
 			query = "INSERT INTO Given (PermitID,CarLicenseNUmber) VALUES (?,?);";
 			try {
             	connection.setAutoCommit(false);
@@ -206,24 +203,21 @@ public class PermitsVehiclesHelper {
             	addToGivenQuery.setInt(1, permitID);
             	addToGivenQuery.setString(2, carLicenseNumber);
             	addToGivenQuery.executeUpdate();
-                connection.commit();
-                System.out.println("Added to Given succesfully..");
+                //connection.commit();
+                //System.out.println("Added to Given succesfully..");
             }catch(SQLException error) {
             	System.out.println(error.getMessage());
                 System.out.println("Issue in addToGiven Operation. Hardware/Inputs are malformed..");
-                connection.rollback();
+                //connection.rollback();
                 System.out.println("Rollback Complete!");
             }finally {
-            	connection.setAutoCommit(true);
+            	//connection.setAutoCommit(true);
             }
-		}catch(SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public static void addToHolds(Connection connection, Integer permitID, String driverID) {
-		try {
+		
 			query = "INSERT INTO Holds (PermitID,driverID) VALUES (?,?);";
 			try {
             	connection.setAutoCommit(false);
@@ -231,20 +225,16 @@ public class PermitsVehiclesHelper {
             	addToHoldsQuery.setInt(1, permitID);
             	addToHoldsQuery.setString(2, driverID);
             	addToHoldsQuery.executeUpdate();
-                connection.commit();
-                System.out.println("Added to Holds succesfully..");
+                //connection.commit();
+                //System.out.println("Added to Holds succesfully..");
             }catch(SQLException error) {
             	System.out.println(error.getMessage());
                 System.out.println("Issue in addToHolds Operation. Hardware/Inputs are malformed..");
-                connection.rollback();
+                //connection.rollback();
                 System.out.println("Rollback Complete!");
             }finally {
-            	connection.setAutoCommit(true);
+            	//connection.setAutoCommit(true);
             }
-		}catch(SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public static void issuePermit(Connection connection,Statement stmt) {
@@ -254,142 +244,153 @@ public class PermitsVehiclesHelper {
 		//update given
 		//update holds
 		//update owns
-		
-		System.out.println("You are adding a Driver Details into the System..");
-        System.out.println("If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");
-		String driverID  = scanner.nextLine();
-	
-		if(!checkDriver(connection,driverID)) {
-			// TODO should we keep it like this or ask them to add driver and come back to this??
-			System.out.println("Given DriverId doesn't exist in the system. Add Driver details to the system");
-			InformationProcessingOperations.addDriver(connection,stmt);
-		}
-		String driverStatus = getDriverStatus(connection,driverID);
-		Integer numOfRegPermits = getNumOfRegPermits(connection,driverID);
-		Integer numOfSplPermits = getNumOfSplPermits(connection,driverID);
-		
-		System.out.println("Enter PermitType");
-		String permitType = scanner.nextLine();
-		
-		//System.out.println(driverStatus);
-		System.out.println(numOfSplPermits);
-		
-		if(permitType.equals("Special event")|| permitType.equals("ParkandRide")) {
-			if(driverStatus.equals("V")) {
-				System.out.println("Visitors can not have permit for this permit type");
-				return;
-			}
-			if(driverStatus.equals("S") || driverStatus.equals("E")) {
-				if(numOfRegPermits == 0) {
-					System.out.println("Students|Employee should have regular permit before requesting for special event permit");
-					return;
-				}
-				if(numOfSplPermits == 1) {
-					System.out.println("Students|Employee can only have 1 permit of this permit type, and it already exists");
-					return;
-				}
-			}
-		}else {
-			System.out.println(numOfRegPermits);
-			if(driverStatus.equals("S") || driverStatus.equals("V")) {
-				//System.out.println(numOfRegPermits);
-				if(numOfRegPermits == 1) {
-					System.out.println("Students|Visitors can only have 1 permit, and it already exists");
-					return;
-				}
-			} 
-			if(driverStatus.charAt(0) == 'E') {
-				if(numOfRegPermits == 2) {
-					System.out.println("Employees can only have 2 permits, and 2 permits already exists");
-					return;
-				}
-			}
-		}
-		
-		System.out.println("Enter Car License Number");
-		String carLicenseNumber  = scanner.nextLine();
-		if(!checkVehicle(connection,carLicenseNumber)) {
-			// TODO should we keep it like this or ask them to add driver and come back to this??
-			System.out.println("Given Vehicle doesn't exist in the system. Add Vehicle details to the system");
-			addGivenVehicle(connection,carLicenseNumber);
-		} else {
-			System.out.println("Permit with Vehicle already exists. Please provide different vehicle number");
-			return;
-		}
-		
-		//adding vehicle driver entry to owns
-		addToOwns(connection, carLicenseNumber,driverID);
-		
-		
-		//check if that vehicle is added to an existing permit
-		//remove vehicle from permit?? should we add
-		//get spacenumber ??
-		//associated ??
-		
-		System.out.println("Enter ParkingLotID");
-		Integer parkingLotID = Integer.valueOf(scanner.nextLine());
-		System.out.println("Enter ZoneID");
-		String zoneID = scanner.nextLine();
-		System.out.println("Enter SpaceType");
-		String spaceType = scanner.nextLine();
-		System.out.println("Enter StartDate");
-		String startDate = scanner.nextLine();
-		System.out.println("Enter ExpirationDate");
-		String expirationDate = scanner.nextLine();
-		System.out.println("Enter ExpirationTime");
-		String expirationTime = scanner.nextLine();
 		try {
-			query = "INSERT INTO Permit (ParkingLotID,ZoneID,SpaceType,StartDate,ExpirationDate,ExpirationTime,PermitType) VALUES (?, ?, ?, ?, ?, ?,?);";
+			connection.setAutoCommit(false);
+			System.out.println("You are adding a Driver Details into the System..");
+	        System.out.println("If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");
+			String driverID  = scanner.nextLine();
+			
+			
+			
+			if(!checkDriver(connection,driverID)) {
+				// TODO should we keep it like this or ask them to add driver and come back to this??
+				System.out.println("Given DriverId doesn't exist in the system. Add Driver details to the system");
+				InformationProcessingOperations.addDriver(connection,stmt);
+			}
+			String driverStatus = getDriverStatus(connection,driverID);
+			Integer numOfRegPermits = getNumOfRegPermits(connection,driverID);
+			Integer numOfSplPermits = getNumOfSplPermits(connection,driverID);
+			
+			System.out.println("Enter PermitType");
+			String permitType = scanner.nextLine();
+			
+			//System.out.println(driverStatus);
+			//System.out.println(numOfSplPermits);
+			
+			if(permitType.equals("Special event")|| permitType.equals("ParkandRide")) {
+				if(driverStatus.equals("V")) {
+					System.out.println("Visitors can not have permit for this permit type");
+					return;
+				}
+				if(driverStatus.equals("S") || driverStatus.equals("E")) {
+					if(numOfRegPermits == 0) {
+						System.out.println("Students|Employee should have regular permit before requesting for special event permit");
+						return;
+					}
+					if(numOfSplPermits == 1) {
+						System.out.println("Students|Employee can only have 1 permit of this permit type, and it already exists");
+						return;
+					}
+				}
+			}else {
+				//System.out.println(numOfRegPermits);
+				if(driverStatus.equals("S") || driverStatus.equals("V")) {
+					//System.out.println(numOfRegPermits);
+					if(numOfRegPermits == 1) {
+						System.out.println("Students|Visitors can only have 1 permit, and it already exists");
+						return;
+					}
+				} 
+				if(driverStatus.charAt(0) == 'E') {
+					if(numOfRegPermits == 2) {
+						System.out.println("Employees can only have 2 permits, and 2 permits already exists");
+						return;
+					}
+				}
+			}
+			
+			System.out.println("Enter Car License Number");
+			String carLicenseNumber  = scanner.nextLine();
+			if(!checkVehicle(connection,carLicenseNumber)) {
+				// TODO should we keep it like this or ask them to add driver and come back to this??
+				System.out.println("Given Vehicle doesn't exist in the system. Add Vehicle details to the system");
+				addGivenVehicle(connection,carLicenseNumber);
+			}
+			
+			//adding vehicle driver entry to owns
+			addToOwns(connection, carLicenseNumber,driverID);
+			
+			
+			//check if that vehicle is added to an existing permit
+			//remove vehicle from permit?? should we add
+			//get spacenumber ??
+			//associated ??
+			
+			System.out.println("Enter ParkingLotID:");
+			Integer parkingLotID = Integer.valueOf(scanner.nextLine());
+			System.out.println("Enter ZoneID:");
+			String zoneID = scanner.nextLine();
+			System.out.println("Enter SpaceType:");
+			String spaceType = scanner.nextLine();
+			System.out.println("Enter StartDate:");
+			String startDate = scanner.nextLine();
+			System.out.println("Enter ExpirationDate:");
+			String expirationDate = scanner.nextLine();
+			System.out.println("Enter ExpirationTime:");
+			String expirationTime = scanner.nextLine();
 			try {
-				connection.setAutoCommit(false);
-				issuePermitQuery =connection.prepareStatement(query);
-				
-				issuePermitQuery.setInt(1,parkingLotID);
-				issuePermitQuery.setString(2,zoneID);
-				issuePermitQuery.setString(3,spaceType);
-				issuePermitQuery.setString(4,startDate);
-				issuePermitQuery.setString(5,expirationDate);
-				issuePermitQuery.setString(6,expirationTime);
-				issuePermitQuery.setString(7,permitType);
-				
-				issuePermitQuery.executeUpdate();
-				
-				connection.commit();
-	            System.out.println("issue Permit is succesfull..");
-	            
-	            try {
-	            	Integer permitID;
-	    			query = "SELECT LAST_INSERT_ID()";
-	    			try {
-	    				lastPermitIDQuery = connection.prepareStatement(query);
-	    				result = lastPermitIDQuery.executeQuery();
-	    				
-	    				while(result.next()) {
-	    				 permitID = Integer.valueOf(result.getInt(1));
-	    				 addToGiven(connection,permitID,carLicenseNumber);
-		    			 addToHolds(connection,permitID,driverID);
-	    				}
-	    				
-	    			} catch (SQLException e) {
-	    				// TODO Auto-generated catch block
-	    				e.printStackTrace();
-	    			}
-	    		}catch(Exception e) {
-	    			System.out.println("Issue in getting last permit id");
-	    		}
-	            
-	            
-	        } catch (SQLException error) {
-	        	System.out.println(error.getMessage());
-	            System.out.println("Issue in issuePermit Operation. Hardware/Inputs are malformed..");
-	            connection.rollback();
-	            System.out.println("Rollback Complete!");
-	        } finally {
-	        	connection.setAutoCommit(true);
-	        }
+				query = "INSERT INTO Permit (ParkingLotID,ZoneID,SpaceType,StartDate,ExpirationDate,ExpirationTime,PermitType) VALUES (?, ?, ?, ?, ?, ?,?);";
+				try {
+					
+					issuePermitQuery =connection.prepareStatement(query);
+					
+					issuePermitQuery.setInt(1,parkingLotID);
+					issuePermitQuery.setString(2,zoneID);
+					issuePermitQuery.setString(3,spaceType);
+					issuePermitQuery.setString(4,startDate);
+					issuePermitQuery.setString(5,expirationDate);
+					issuePermitQuery.setString(6,expirationTime);
+					issuePermitQuery.setString(7,permitType);
+					
+					issuePermitQuery.executeUpdate();
+		            
+		            try {
+		            	Integer permitID;
+		    			query = "SELECT LAST_INSERT_ID()";
+		    			try {
+		    				lastPermitIDQuery = connection.prepareStatement(query);
+		    				result = lastPermitIDQuery.executeQuery();
+		    				
+		    				while(result.next()) {
+		    				 permitID = Integer.valueOf(result.getInt(1));
+		    				 addToGiven(connection,permitID,carLicenseNumber);
+			    			 addToHolds(connection,permitID,driverID);
+		    				}
+		    				
+		    			} catch (SQLException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		    		}catch(Exception e) {
+		    			System.out.println("Issue in getting last permit id");
+		    		}
+		            
+		            
+		        } catch (SQLException error) {
+		        	System.out.println(error.getMessage());
+		            System.out.println("Issue in issuePermit Operation. Hardware/Inputs are malformed..");
+		            connection.rollback();
+		            System.out.println("Rollback Complete!");
+		        }
+			}catch(Exception e) {
+				System.out.println("Issue in issuePermit Operation. Hardware/Inputs are malformed..");
+			}
+			connection.commit();
+			System.out.println("Added to Owns succesfully..");
+			System.out.println("Added to Given succesfully..");
+			System.out.println("Added to Holds succesfully..");
+			System.out.println("Issue Permit is succesfull..");
 		}catch(Exception e) {
 			System.out.println("Issue in issuePermit Operation. Hardware/Inputs are malformed..");
-		}
+		} finally {
+        	try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+		
 	}
 	
 	public static void updatePermit(Connection connection,Statement stmt) {
