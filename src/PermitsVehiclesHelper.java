@@ -82,7 +82,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static Integer getNumOfSplPermits(Connection connection, String driverID) {
-		query = "select count(PermitID) from Holds NATURAL JOIN  Permit where PermitType IN (\"Special event\",\"ParkandRide\") and DriverID = ? GROUP BY DriverID";
+		query = "select count(PermitID) as numOfPermits from Holds NATURAL JOIN  Permit where PermitType IN (\"Special event\",\"ParkandRide\") and DriverID = ? GROUP BY DriverID";
 		
 		try {
 			countSplPermitQuery = connection.prepareStatement(query);
