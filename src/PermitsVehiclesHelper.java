@@ -260,6 +260,12 @@ public class PermitsVehiclesHelper {
 			String driverStatus = getDriverStatus(connection,driverID);
 			Integer numOfRegPermits = getNumOfRegPermits(connection,driverID);
 			Integer numOfSplPermits = getNumOfSplPermits(connection,driverID);
+			Integer totalPermits = numOfRegPermits + numOfSplPermits;
+			
+			if(driverStatus.equals("V") && totalPermits == 1) {
+				System.out.println("Visitors can only have 1 permit and it already exists");
+				return;
+			}
 			
 			System.out.println("Enter PermitType");
 			String permitType = scanner.nextLine();
@@ -268,15 +274,12 @@ public class PermitsVehiclesHelper {
 			//System.out.println(numOfSplPermits);
 			
 			if(permitType.equals("Special event")|| permitType.equals("ParkandRide")) {
-				if(driverStatus.equals("V")) {
-					System.out.println("Visitors can not have permit for this permit type");
-					return;
-				}
+				
 				if(driverStatus.equals("S") || driverStatus.equals("E")) {
-					if(numOfRegPermits == 0) {
+					/*if(numOfRegPermits == 0) {
 						System.out.println("Students|Employee should have regular permit before requesting for special event permit");
 						return;
-					}
+					}*/
 					if(numOfSplPermits == 1) {
 						System.out.println("Students|Employee can only have 1 permit of this permit type, and it already exists");
 						return;
@@ -291,7 +294,7 @@ public class PermitsVehiclesHelper {
 						return;
 					}
 				} 
-				if(driverStatus.charAt(0) == 'E') {
+				if(driverStatus.equals("E")) {
 					if(numOfRegPermits == 2) {
 						System.out.println("Employees can only have 2 permits, and 2 permits already exists");
 						return;

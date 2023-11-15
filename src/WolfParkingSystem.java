@@ -388,7 +388,7 @@ public class WolfParkingSystem {
 					menu.displayMaintanenceOperationsOfPermitsAndVehicles(connection,stmt);
 					break;
 				case "3":
-					menu.displayCitationOperations();
+					menu.displayCitationOperations(stmt);
 					break;
 				case "4":
 					menu.displayReportOperations();

@@ -136,7 +136,7 @@ public class MenuOfOperations {
         
     }
 
-    public void displayCitationOperations() {
+    public void displayCitationOperations(Statement statement) {
         scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n\n" + line + menuMessage + " Generating and Maintaining Citations " + line);
@@ -158,36 +158,43 @@ public class MenuOfOperations {
                     System.out.println("\nGoing Back to the Main Menu..\n");
                     return;
                 case 1:
-                    // addCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue) 
+                    // addCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue)
+                    CitationHelper.addCitation(statement);
+
                     break;
                 case 2:
                     // appealCitationByDriver(CitationNumber, PhoneNumber, DriverRemark, AdminRemark)
+                    CitationHelper.appealCitationByDriver(statement);
                     break;
                 case 3:
                     // updateCitationAppealByAdmin(CitationNumber,ParkingLotID,CarLicenseNumber,AdminRemark)
+                    CitationHelper.updateCitationAppealByAdmin(statement);
                     break;
                 case 4:
                     // updateCitationPaymentInfo(CitationNumber,ParkingLotID,CarLicensenceNumber, AmountDue, PaymentStatus)
+                    CitationHelper.updateCitationPaymentInfo(statement);
                     break;
                 case 5:
-                    // retrieveCitationDetails(CitationNumber, CarLicensenceNumber)
+                    CitationHelper.retrieveCitationDetails(statement);
                     break;
                 case 6:
                     // checkValidityOfParking(CarLicensenceNumber, ParkingLotID, ZoneID, SpaceNumber, SpaceType)
+                    CitationHelper.checkValidatiyOfVehicle( statement);
                     break;
                 case 7:
                     // Newly added. This was not there in our Project 1.
-                    // updateCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue) 
+                    // updateCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue)
+                    CitationHelper.updateCitation(statement);
                     break;
                 case 8:
-                    // calculateFine(SpaceType, CategoryOfIssue)
+                    CitationHelper.calculateFine( statement);
                     break;
                 default:
                     System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
                     break;
             }
         }
-        
+
     }
 
     public void displayReportOperations() {
