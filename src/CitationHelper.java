@@ -1,13 +1,12 @@
 import javax.xml.transform.Source;
 import java.sql.*;
-import java.sql.Statement;
 import java.util.Scanner;
 import java.util.*;
 import java.time.LocalDate;
 public class CitationHelper {
     static Scanner scanner = new Scanner(System.in);
 
-    public static void addCitation(Statement statement) {
+    public static void addCitation(Connection connection,Statement statement) {
         try{
             System.out.println("\nPlease enter the Parking Lot ID");
             Integer ParkingLotID = Integer.parseInt(scanner.nextLine());
@@ -25,37 +24,48 @@ public class CitationHelper {
             String Color;
             String Manufacturer;
             String Year;
+            try {
+            	connection.setAutoCommit(false);
+                ResultSet carExists = statement.executeQuery("select * from Vehicle where CarLicenseNumber='"+CarLicenseNumber+"';");
+                if(!carExists.next()){
+                    System.out.println("\nPlease enter the model of vehicle");
+                    Model = scanner.nextLine();
 
-            ResultSet carExists = statement.executeQuery("select * from Vehicle where CarLicenseNumber='"+CarLicenseNumber+"';");
-            if(!carExists.next()){
-                System.out.println("\nPlease enter the model of vehicle");
-                Model = scanner.nextLine();
+                    System.out.println("\nPlease enter the color of vehicle");
+                    Color = scanner.nextLine();
 
-                System.out.println("\nPlease enter the color of vehicle");
-                Color = scanner.nextLine();
+                    System.out.println("\nPlease enter the manufacturer of vehicle");
+                    Manufacturer = scanner.nextLine();
 
-                System.out.println("\nPlease enter the manufacturer of vehicle");
-                Manufacturer = scanner.nextLine();
+                    System.out.println("\nPlease enter the year of vehicle");
+                    Year = scanner.nextLine();
 
-                System.out.println("\nPlease enter the year of vehicle");
-                Year = scanner.nextLine();
+                    statement.executeUpdate("INSERT INTO Vehicle (CarLicenseNumber,Model,Color,Manufacturer,`Year`) VALUES\n"
+                            + "('"+CarLicenseNumber+"', '"+Model+"', '"+Color+"', '"+Manufacturer+"', "+Year+")");
+                }
 
-                statement.executeUpdate("INSERT INTO Vehicle (CarLicenseNumber,Model,Color,Manufacturer,`Year`) VALUES\n"
-                        + "('"+CarLicenseNumber+"', '"+Model+"', '"+Color+"', '"+Manufacturer+"', "+Year+")");
-            }
+                statement.executeUpdate("INSERT INTO Citation (ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue,PaymentStatus)			\n"
+                        + "VALUES			\n"
+                        + "("+ParkingLotID+", CURRENT_DATE(), CURRENT_TIME(), '"+CategoryType+"',"+AmountDue+",'Due');");
 
-            statement.executeUpdate("INSERT INTO Citation (ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue,PaymentStatus)			\n"
-                    + "VALUES			\n"
-                    + "("+ParkingLotID+", CURRENT_DATE(), CURRENT_TIME(), '"+CategoryType+"',"+AmountDue+",'Due');");
+                ResultSet CitationNumber = statement.executeQuery("select max(CitationNumber) as CitationNumber from Citation;");
 
-            ResultSet CitationNumber = statement.executeQuery("select max(CitationNumber) as CitationNumber from Citation;");
-
-            if(CitationNumber.next()){
-                statement.executeUpdate("INSERT INTO IssuedTo (CitationNumber, CarLicenseNumber)\n"
-                        + "VALUES\n"
-                        + "("+CitationNumber.getInt("CitationNumber")+", '"+CarLicenseNumber+"');");
-            }
-            System.out.println("Citation Added successfully ");
+                if(CitationNumber.next()){
+                    statement.executeUpdate("INSERT INTO IssuedTo (CitationNumber, CarLicenseNumber)\n"
+                            + "VALUES\n"
+                            + "("+CitationNumber.getInt("CitationNumber")+", '"+CarLicenseNumber+"');");
+                }
+                connection.commit();
+                System.out.println("Citation Added successfully ");
+            }catch(SQLException error) {
+	        	System.out.println(error.getMessage());
+	            System.out.println("Issue in addCitation Operation. Hardware/Inputs are malformed..");
+	            connection.rollback();
+	            System.out.println("Rollback Complete!");
+	        }finally {
+	        	connection.setAutoCommit(true);
+	        }
+            
         }
         catch(Exception e){
             e.printStackTrace();
@@ -63,7 +73,7 @@ public class CitationHelper {
 
     }
 
-    public static void appealCitationByDriver(Statement statement){
+    public static void appealCitationByDriver(Connection connection,Statement statement){
        try{
            System.out.println("Please enter the Citation Number");
            Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -84,7 +94,7 @@ public class CitationHelper {
        }
     }
 
-    public static void updateCitationAppealByAdmin(Statement statement){
+    public static void updateCitationAppealByAdmin(Connection connection,Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -103,7 +113,7 @@ public class CitationHelper {
         }
     }
 
-    public static void updateCitationAppealByDriver(Statement statement){
+    public static void updateCitationAppealByDriver(Connection connection,Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -122,11 +132,15 @@ public class CitationHelper {
         }
     }
 
-    public static void updateCitationPaymentInfo(Statement statement){
+    public static void updateCitationPaymentInfo(Connection connection,Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
             String DriverID = getDriverIdOfCitation(statement,CitationNumber);
+            if(DriverID.equals(" ")) {
+            	 System.out.println("Payment Status cannot be updated for No Permit Category Citations.");
+            	 return;
+            }
 //       DO WE NEED TO DELETE ENTRY FROM ISSUED TO?????
 
             statement.executeUpdate("Update Citation set PaymentStatus='Paid', AmountDue = 0 where CitationNumber="+CitationNumber+";");
@@ -157,7 +171,7 @@ public class CitationHelper {
     	return DriverId;
     }
     
-    public static  void updateCitation(Statement statement){
+    public static  void updateCitation(Connection connection,Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -215,7 +229,7 @@ public class CitationHelper {
         }
     }
 
-    public static void checkValidatiyOfVehicle( Statement statement){
+    public static void checkValidatiyOfVehicle(Connection connection, Statement statement){
         try {
             System.out.println("Please enter the Car License Number:");
             String CarLicenseNumber = scanner.nextLine();
@@ -248,7 +262,7 @@ public class CitationHelper {
         }
     }
 
-    public static void retrieveCitationDetails( Statement statement){
+    public static void retrieveCitationDetails(Connection connection, Statement statement){
         try {
 
             System.out.println("How would you like to retrieve Citation Details?\n");
@@ -306,7 +320,7 @@ public class CitationHelper {
         }
     }
 
-    public static void calculateFine( Statement statement){
+    public static void calculateFine( Connection connection, Statement statement){
         try {
             System.out.println("\nPlease enter the Car Lisence Number");
             String CarLicenseNumber = scanner.nextLine();

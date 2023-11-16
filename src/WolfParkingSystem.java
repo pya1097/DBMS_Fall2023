@@ -8,7 +8,7 @@ public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;
 	static Scanner scanner;
-	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jkteluku";
+	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/smashet";
     
 	public static void welcomePrompt() {
 		String projectName = "CSC 540 Project Demo: Wolf Parking Management System";
@@ -53,8 +53,8 @@ public class WolfParkingSystem {
 		 */
 		
 		Class.forName("org.mariadb.jdbc.Driver");
-        String user = "jkteluku";
-        String password = "200477972";
+        String user = "smashet";
+        String password = "200536263";
         connection = DriverManager.getConnection(url, user, password);
         stmt = connection.createStatement();
             	
@@ -76,9 +76,9 @@ public class WolfParkingSystem {
 	
 	private static void prepareDB() {
 	    try {
-			stmt.executeUpdate("DROP DATABASE jkteluku;");
-			stmt.executeUpdate("CREATE DATABASE jkteluku;");
-			stmt.executeUpdate("USE jkteluku;");
+			stmt.executeUpdate("DROP DATABASE smashet;");
+			stmt.executeUpdate("CREATE DATABASE smashet;");
+			stmt.executeUpdate("USE smashet;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -392,7 +392,7 @@ public class WolfParkingSystem {
 					menu.displayMaintanenceOperationsOfPermitsAndVehicles(connection,stmt);
 					break;
 				case "3":
-					menu.displayCitationOperations(stmt);
+					menu.displayCitationOperations(connection,stmt);
 					break;
 				case "4":
 					menu.displayReportOperations(connection, stmt);

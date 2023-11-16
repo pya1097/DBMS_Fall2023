@@ -109,13 +109,13 @@ public class DisplayOperation {
         	ResultSet result = statement.executeQuery(query);
         	while(result.next()) {
         		String PermitID = result.getObject(1).toString();
-        		String ParkingLotID = result.getObject(1).toString();
-        		String ZoneID = result.getObject(1).toString();
-        		String SpaceType = result.getObject(1).toString();
-        		String StartDate = result.getObject(1).toString();
-        		String ExpirationDate = result.getObject(1).toString();
-        		String ExpirationTime = result.getObject(1).toString();
-        		String PermitType = result.getObject(1).toString();
+        		String ParkingLotID = result.getObject(2).toString();
+        		String ZoneID = result.getObject(3).toString();
+        		String SpaceType = result.getObject(4).toString();
+        		String StartDate = result.getObject(5).toString();
+        		String ExpirationDate = result.getObject(6).toString();
+        		String ExpirationTime = result.getObject(7).toString();
+        		String PermitType = result.getObject(8).toString();
 
         		System.out.println("PermitID: " + PermitID + "; ParkingLotID: " + ParkingLotID+ "; ZoneID: " + ZoneID+ "; SpaceType: " + SpaceType+ "; StartDate: " + StartDate+ "; ExpirationDate: " + ExpirationDate+ "; ExpirationTime: " + ExpirationTime+ "; PermitType: " + PermitType);
 

@@ -121,7 +121,7 @@ public class MenuOfOperations {
         }   
     }
 
-    public void displayCitationOperations(Statement statement) {
+    public void displayCitationOperations(Connection connection,Statement statement) {
         scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n\n" + line + menuMessage + " Generating and Maintaining Citations " + line);
@@ -143,28 +143,28 @@ public class MenuOfOperations {
                     System.out.println("\nGoing Back to the Main Menu..\n");
                     return;
                 case 1:
-                    CitationHelper.addCitation(statement);
+                    CitationHelper.addCitation(connection,statement);
                     break;
                 case 2:
-                    CitationHelper.appealCitationByDriver(statement);
+                    CitationHelper.appealCitationByDriver(connection,statement);
                     break;
                 case 3:
-                    CitationHelper.updateCitationAppealByAdmin(statement);
+                    CitationHelper.updateCitationAppealByAdmin(connection,statement);
                     break;
                 case 4:
-                    CitationHelper.updateCitationPaymentInfo(statement);
+                    CitationHelper.updateCitationPaymentInfo(connection,statement);
                     break;
                 case 5:
-                    CitationHelper.retrieveCitationDetails(statement);
+                    CitationHelper.retrieveCitationDetails(connection,statement);
                     break;
                 case 6:
-                    CitationHelper.checkValidatiyOfVehicle( statement);
+                    CitationHelper.checkValidatiyOfVehicle( connection,statement);
                     break;
                 case 7:
-                    CitationHelper.updateCitation(statement);
+                    CitationHelper.updateCitation(connection,statement);
                     break;
                 case 8:
-                    CitationHelper.calculateFine( statement);
+                    CitationHelper.calculateFine(connection, statement);
                     break;
                 default:
                     System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
