@@ -15,7 +15,6 @@ public class MenuOfOperations {
             System.out.println("(3)  Add a Space.");
             System.out.println("(4)  Add a Driver.");
             System.out.println("(5)  Update a Parking Lot.");
-            // System.out.println("(6)  Update a Zone.");
             System.out.println("(6)  Update a Space.");
             System.out.println("(7)  Update a Driver.");
             System.out.println("(8)  Delete a Parking Lot.");
@@ -46,9 +45,6 @@ public class MenuOfOperations {
                 case 5:
                     InformationProcessingOperations.updateParkingLot(connection, statement);
                     break;
-                // case 6:
-                //    InformationProcessingOperations.updateZone(connection, statement);
-                //    break;
                 case 6:
                     InformationProcessingOperations.updateSpace(connection, statement);
                     break;
@@ -89,7 +85,6 @@ public class MenuOfOperations {
             System.out.println("(6) Delete Vehicle Information.");
             System.out.println("(7) Adding Vehicle to Existing Permit.");
             System.out.print("\n Select your choice: ");
-            // System.out.println("(8) Deleting Vehicle From an Existing Permit."); - I think this is same as deleteVehicle() - We can discuss and ignore this.
 
             String choiceNumber = scanner.nextLine().strip();
 
@@ -99,41 +94,31 @@ public class MenuOfOperations {
                 System.out.println("\nGoing Back to the Main Menu..\n");
                 return;
             case "1":
-                // issuePermit(ParkingLotID, ZoneID, SpaceType, CarLicenseNumber, StartDate, ExpirationDate, ExpirationTime, UniversityID, PhoneNumber, PermitType, DriverName, Status)
                 PermitsVehiclesHelper.issuePermit(connection, stmt);
             	break;
             case "2":
-                // updatePermit(PermitID, ParkingLotID?, ZoneID?, SpaceType?, CarLicenseNumber?, StartDate?, ExpirationDate?, ExpirationTime?, PermitType?)
             	PermitsVehiclesHelper.updatePermit(connection, stmt);
             	break;
             case "3":
-                // deletePermit(PermitID)
             	PermitsVehiclesHelper.deletePermit(connection, stmt);
                 break;
             case "4":
-                // addVehicle(PermitID, CarLicenseNumber)
             	PermitsVehiclesHelper.addVehicle(connection,stmt);
                 break;
             case "5":
-                // updateVehicle(PermitID, CarLicenseNumber)
             	PermitsVehiclesHelper.updateVehicle(connection,stmt);
                 break;
             case "6":
-                // deleteVehicle(PermitID, CarLicenseNumber)
             	PermitsVehiclesHelper.deleteVehicle(connection,stmt);
                 break;
             case "7":
-                // addVehicleToExistingPermit(PermitID, CarLicenseNumber)
             	PermitsVehiclesHelper.addVehcileToExistingPermit(connection,stmt);
                 break;
             default:
                 System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
                 break;
-        }
-
-
-        }
-        
+            }
+        }   
     }
 
     public void displayCitationOperations(Statement statement) {
@@ -158,32 +143,24 @@ public class MenuOfOperations {
                     System.out.println("\nGoing Back to the Main Menu..\n");
                     return;
                 case 1:
-                    // addCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue)
                     CitationHelper.addCitation(statement);
-
                     break;
                 case 2:
-                    // appealCitationByDriver(CitationNumber, PhoneNumber, DriverRemark, AdminRemark)
                     CitationHelper.appealCitationByDriver(statement);
                     break;
                 case 3:
-                    // updateCitationAppealByAdmin(CitationNumber,ParkingLotID,CarLicenseNumber,AdminRemark)
                     CitationHelper.updateCitationAppealByAdmin(statement);
                     break;
                 case 4:
-                    // updateCitationPaymentInfo(CitationNumber,ParkingLotID,CarLicensenceNumber, AmountDue, PaymentStatus)
                     CitationHelper.updateCitationPaymentInfo(statement);
                     break;
                 case 5:
                     CitationHelper.retrieveCitationDetails(statement);
                     break;
                 case 6:
-                    // checkValidityOfParking(CarLicensenceNumber, ParkingLotID, ZoneID, SpaceNumber, SpaceType)
                     CitationHelper.checkValidatiyOfVehicle( statement);
                     break;
                 case 7:
-                    // Newly added. This was not there in our Project 1.
-                    // updateCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue)
                     CitationHelper.updateCitation(statement);
                     break;
                 case 8:
@@ -254,55 +231,65 @@ public class MenuOfOperations {
         scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n\n" + line + menuMessage + " Displaying Data tables " + line);
-            System.out.println("(0) Return to Main Menu.");
-            System.out.println("(1) Display Paking Lot Data.");
-            System.out.println("(2) Display Zone Data.");
-
+            System.out.println("(0)  Return to Main Menu.");
+            System.out.println("(1)  Display Table: Paking Lot.");
+            System.out.println("(2)  Display Table: Zone.");
+            System.out.println("(3)  Display Table: Space.");
+            System.out.println("(4)  Display Table: Driver.");
+            System.out.println("(5)  Display Table: Vehicle.");
+            System.out.println("(6)  Display Table: Owns.");
+            System.out.println("(7)  Display Table: Permit.");
+            System.out.println("(8)  Display Table: Associated.");
+            System.out.println("(9)  Display Table: Given.");
+            System.out.println("(10) Display Table: Holds.");
+            System.out.println("(11)  Display Table: Citation.");
+            System.out.println("(12)  Display Table: Issued.");
+            System.out.println("(13)  Display Table: Appeals.");
             System.out.print("\n\nSelect your choice: ");
 
-            int choiceNumber = scanner.nextInt();
+            String choiceNumber = scanner.nextLine();
 
             switch(choiceNumber) {
-                case 0:
+                case "0":
                     System.out.println("\nGoing Back to the Main Menu..\n");
                     return;
-                case 1:
+                case "1":
                 	DisplayOperation.getNoOfCitations(connection, stmt);
                     break;
-                case 2:
+                case "2":
                 	DisplayOperation.getZone(connection, stmt);
                     break;  
-                case 3:
+                case "3":
                 	DisplayOperation.getSpace(connection, stmt);
                     break;
-                case 4:
+                case "4":
                 	DisplayOperation.getDriver(connection, stmt);
                     break;
-                case 5:
+                case "5":
                 	DisplayOperation.getVehicle(connection, stmt);
                     break;
-                case 6:
+                case "6":
                 	DisplayOperation.getOwns(connection, stmt);
                     break;
-                case 7:
+                case "7":
                 	DisplayOperation.getPermit(connection, stmt);
                     break;
-                case 8:
+                case "8":
                 	DisplayOperation.getAssociated(connection, stmt);
                     break;
-                case 9:
+                case "9":
                 	DisplayOperation.getGiven(connection, stmt);
                     break;
-                case 10:
+                case "10":
                 	DisplayOperation.getHolds(connection, stmt);
                     break;
-                case 11:
+                case "11":
                 	DisplayOperation.getCitation(connection, stmt);
                     break;
-                case 12:
+                case "12":
                 	DisplayOperation.getIssuedTo(connection, stmt);
                     break;
-                case 13:
+                case "13":
                 	DisplayOperation.getAppeals(connection, stmt);
                     break;
                 default:

@@ -369,14 +369,9 @@ public class WolfParkingSystem {
 			System.out.println("(2) Display Operations Related to Maintaining Permits and Vehicle Information of Drivers.");
 			System.out.println("(3) Display Operations Related to Generating and Maintaining Citations.");
 			System.out.println("(4) Display Operations Related to Reports.");
-<<<<<<< Updated upstream
 			System.out.println("(5) Reload The Demo Data Again.");
-			System.out.println("(0) Exit the Menu.");
-=======
-			System.out.println("(5) Initialize DB.");
 			System.out.println("(6) Display the Data Tables.");
 			System.out.println("(0) Exit the Menu.");	
->>>>>>> Stashed changes
 			System.out.print("\n Select your choice: ");
 			
 			choiceNumber = scanner.nextLine();

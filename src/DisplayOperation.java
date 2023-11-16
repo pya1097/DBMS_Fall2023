@@ -27,7 +27,7 @@ public class DisplayOperation {
         	while(result.next()) {
         		String ParkingLotID = result.getObject(1).toString();
         		String Zone = result.getObject(2).toString();
-                System.out.println("ParkingLotID: " + ParkingLotID + "; Zone :" + Zone);
+                System.out.println("ParkingLotID: " + ParkingLotID + "; Zone : " + Zone);
 
         	}
     	} catch (Exception e) {
@@ -61,7 +61,7 @@ public class DisplayOperation {
         		String DriverId = result.getObject(1).toString();
         		String DriverName = result.getObject(2).toString();
         		String Status = result.getObject(3).toString();
-                System.out.println("DriverID: " + DriverId + "; DriverName :" + DriverName+ "; Status" + Status);
+                System.out.println("DriverID: " + DriverId + "; DriverName: " + DriverName+ "; Status: " + Status);
 
         	}
     	} catch (Exception e) {
@@ -95,7 +95,7 @@ public class DisplayOperation {
         	while(result.next()) {
         		String CarLicenseNumber = result.getObject(1).toString();
         		String PhoneNumber = result.getObject(2).toString();
-                System.out.println("CarLicenseNumber: " + CarLicenseNumber + "; PhoneNumber :" + PhoneNumber);
+                System.out.println("CarLicenseNumber: " + CarLicenseNumber + "; PhoneNumber: " + PhoneNumber);
 
         	}
     	} catch (Exception e) {
@@ -151,7 +151,7 @@ public class DisplayOperation {
         	while(result.next()) {
         		String PermitId = result.getObject(1).toString();
         		String CarLicenseNumber = result.getObject(2).toString();
-                System.out.println("PermitId :" + PermitId + " CarLicenseNumber :" + CarLicenseNumber);
+                System.out.println("PermitId: " + PermitId + " CarLicenseNumber: " + CarLicenseNumber);
 
         	}
     	} catch (Exception e) {
@@ -166,7 +166,7 @@ public class DisplayOperation {
         	while(result.next()) {
         		String PermitID = result.getObject(1).toString();
         		String PhoneNumber = result.getObject(2).toString();
-                System.out.println("PermitID: " + PermitID + "PhoneNumber :" + PhoneNumber);
+                System.out.println("PermitID: " + PermitID + "; PhoneNumber: " + PhoneNumber);
 
         	}
     	} catch (Exception e) {
