@@ -8,7 +8,7 @@ public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;
 	static Scanner scanner;
-	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/smashet";
+	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jkteluku";
     
 	public static void welcomePrompt() {
 		String projectName = "CSC 540 Project Demo: Wolf Parking Management System";
@@ -53,8 +53,8 @@ public class WolfParkingSystem {
 		 */
 		
 		Class.forName("org.mariadb.jdbc.Driver");
-        String user = "smashet";
-        String password = "200536263";
+        String user = "jkteluku";
+        String password = "200477972";
         connection = DriverManager.getConnection(url, user, password);
         stmt = connection.createStatement();
             	
@@ -79,9 +79,9 @@ public class WolfParkingSystem {
 	
 	private static void prepareDB() {
 	    try {
-			stmt.executeUpdate("DROP DATABASE smashet;");
-			stmt.executeUpdate("CREATE DATABASE smashet;");
-			stmt.executeUpdate("USE smashet;");
+			stmt.executeUpdate("DROP DATABASE jkteluku;");
+			stmt.executeUpdate("CREATE DATABASE jkteluku;");
+			stmt.executeUpdate("USE jkteluku;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -278,7 +278,9 @@ public class WolfParkingSystem {
 					+ "( 'Hicks1', 'M2 Coupe', 'Zandvoort Blue', 'BMW', 2024),\n"
 					+ "( 'Garcia1', 'Continental GT Speed', 'Blue Fusion', 'Bentley', 2024),\n"
 					+ "( 'CRICKET', 'Civic SI', 'Sonic Gray Pear', 'Honda', 2024),\n"
-					+ "( 'PROFX', 'Taycan Sport Turismo', 'Frozenblue Metallic', 'Porsche', 2024);");
+					+ "( 'PROFX', 'Taycan Sport Turismo', 'Frozenblue Metallic', 'Porsche', 2024),\n"
+					+ "( 'VAN-9910', 'Macan GTS', 'Papaya Metallic', 'Porsche', 2024);");
+			
 			
 			stmt.executeUpdate("INSERT INTO Driver (DriverID,Status,DriverName)\n"
 					+ "VALUES\n"
@@ -337,6 +339,10 @@ public class WolfParkingSystem {
 			
 			stmt.executeUpdate("INSERT INTO IssuedTo (CitationNumber, CarLicenseNumber)\n"
 					+ "VALUES\n"
+					+ "(1, 'VAN-9910');");
+			
+			stmt.executeUpdate("INSERT INTO IssuedTo (CitationNumber, CarLicenseNumber)\n"
+					+ "VALUES\n"
 					+ "(2, 'CRICKET');");
 			
 			stmt.executeUpdate("INSERT INTO Pays (CitationNumber, DriverID)\n"
@@ -391,7 +397,7 @@ public class WolfParkingSystem {
 					menu.displayCitationOperations(stmt);
 					break;
 				case "4":
-					menu.displayReportOperations();
+					menu.displayReportOperations(connection, stmt);
 					break;
 				case "5":
 					prepareDB();

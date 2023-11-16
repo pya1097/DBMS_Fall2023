@@ -197,7 +197,7 @@ public class MenuOfOperations {
 
     }
 
-    public void displayReportOperations() {
+    public void displayReportOperations(Connection connection, Statement stmt) {
         scanner = new Scanner(System.in);
         while (true) {
             System.out.println("\n\n" + line + menuMessage + " Generating and Maintaining Citations " + line);
@@ -219,16 +219,16 @@ public class MenuOfOperations {
                     System.out.println("\nGoing Back to the Main Menu..\n");
                     return;
                 case 1:
-                    // addCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue) 
+                    ReportOperations.getNoOfCitations(connection, stmt);
                     break;
                 case 2:
-                    // appealCitationByDriver(CitationNumber, PhoneNumber, DriverRemark, AdminRemark)
+                    ReportOperations.getNoOfViolatingVehicles(connection, stmt);
                     break;
                 case 3:
-                    // updateCitationAppealByAdmin(CitationNumber,ParkingLotID,CarLicenseNumber,AdminRemark)
+                    ReportOperations.getParkingLotAndZones(connection, stmt);
                     break;
                 case 4:
-                    // updateCitationPaymentInfo(CitationNumber,ParkingLotID,CarLicensenceNumber, AmountDue, PaymentStatus)
+                    ReportOperations.getEmployeesWithPermits(connection, stmt);
                     break;
                 case 5:
                     // retrieveCitationDetails(CitationNumber, CarLicensenceNumber)
