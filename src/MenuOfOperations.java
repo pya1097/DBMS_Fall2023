@@ -250,6 +250,68 @@ public class MenuOfOperations {
         
     }
 
+    public void displayDataTables(Connection connection, Statement stmt) {
+        scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\n\n" + line + menuMessage + " Displaying Data tables " + line);
+            System.out.println("(0) Return to Main Menu.");
+            System.out.println("(1) Display Paking Lot Data.");
+            System.out.println("(2) Display Zone Data.");
+
+            System.out.print("\n\nSelect your choice: ");
+
+            int choiceNumber = scanner.nextInt();
+
+            switch(choiceNumber) {
+                case 0:
+                    System.out.println("\nGoing Back to the Main Menu..\n");
+                    return;
+                case 1:
+                	DisplayOperation.getNoOfCitations(connection, stmt);
+                    break;
+                case 2:
+                	DisplayOperation.getZone(connection, stmt);
+                    break;  
+                case 3:
+                	DisplayOperation.getSpace(connection, stmt);
+                    break;
+                case 4:
+                	DisplayOperation.getDriver(connection, stmt);
+                    break;
+                case 5:
+                	DisplayOperation.getVehicle(connection, stmt);
+                    break;
+                case 6:
+                	DisplayOperation.getOwns(connection, stmt);
+                    break;
+                case 7:
+                	DisplayOperation.getPermit(connection, stmt);
+                    break;
+                case 8:
+                	DisplayOperation.getAssociated(connection, stmt);
+                    break;
+                case 9:
+                	DisplayOperation.getGiven(connection, stmt);
+                    break;
+                case 10:
+                	DisplayOperation.getHolds(connection, stmt);
+                    break;
+                case 11:
+                	DisplayOperation.getCitation(connection, stmt);
+                    break;
+                case 12:
+                	DisplayOperation.getIssuedTo(connection, stmt);
+                    break;
+                case 13:
+                	DisplayOperation.getAppeals(connection, stmt);
+                    break;
+                default:
+                    System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
+                    break;
+            }
+        }
+        
+    }
 
 
 }
