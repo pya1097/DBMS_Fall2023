@@ -402,17 +402,17 @@ public class PermitsVehiclesHelper {
 	        String permitID;
 	        String option;
 	        scanner = new Scanner(System.in);
-	        System.out.println("Enter permitID of the permit");
+	        System.out.println("Enter permitID of the permit:");
 	        permitID = scanner.nextLine();
-	        System.out.println("1. Update Parking Lot ID");
-	        System.out.println("2. Update Zone");
-	        System.out.println("3. Update Space Type");
-	        System.out.println("4. Update Start Date");
-	        System.out.println("5. Update Expiration Date");
-	        System.out.println("6. Update Expiration Time");
-	        System.out.println("7. Update Permit Type");
+	        System.out.println("1. Update Parking Lot ID:");
+	        System.out.println("2. Update Zone:");
+	        System.out.println("3. Update Space Type:");
+	        System.out.println("4. Update Start Date:");
+	        System.out.println("5. Update Expiration Date:");
+	        System.out.println("6. Update Expiration Time:");
+	        System.out.println("7. Update Permit Type:");
 	        option = scanner.nextLine();
-	        System.out.println("Enter the new value");
+	        System.out.println("Enter the new value:");
 	        value = scanner.nextLine();
 
 	        switch (option) {

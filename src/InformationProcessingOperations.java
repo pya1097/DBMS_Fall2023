@@ -8,6 +8,7 @@ public class InformationProcessingOperations {
 	private static PreparedStatement finalDeleteDriverQuery = null;
 	private static PreparedStatement  finalDeletePermitQuery = null;
     private static ResultSet result = null;
+    static Scanner scanner = new Scanner(System.in);
 	
 	public static final String updateParkingLotNameQuery = "UPDATE ParkingLot SET Name = ? WHERE ParkingLotID = ?";
     public static final String updateParkingLotAddressQuery = "UPDATE ParkingLot SET Address = ? WHERE ParkingLotID = ?";
@@ -29,7 +30,7 @@ public class InformationProcessingOperations {
     public static void addParkingLot(Connection connection, Statement statement) {
     	try {
         	String query = "INSERT INTO ParkingLot (ParkingLotID, Name, Address) VALUES (?, ?, ?)";
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             
             System.out.println("You are adding a Parking Lot..");
             // isnt this auto increment?
@@ -66,7 +67,7 @@ public class InformationProcessingOperations {
     public static void addZone(Connection connection, Statement statement) {
     	try {
         	String query = "INSERT INTO Zone (ParkingLotID, ZoneID) VALUES (?, ?)";
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
  
             System.out.println("You are adding a Zone to a Parking Lot..");
             System.out.println("Specify the Parking Lot ID where you intend to add a Zone: ");
@@ -99,7 +100,7 @@ public class InformationProcessingOperations {
     public static void addSpace(Connection connection, Statement statement) {
     	try {
         	String query = "INSERT INTO Space (ParkingLotID, ZoneID, SpaceType, SpaceNumber, AvailabilityStatus) VALUES (?, ?, ?, ?, ?)";
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
  
             System.out.println("You are adding a Space to a Parking Lot and as associated Zone..");
             System.out.println("Specify the Parking Lot ID where you intend to add the Space: ");
@@ -148,7 +149,7 @@ public class InformationProcessingOperations {
          */
     	try {
         	
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
  
             System.out.println("You are adding a Driver Details into the System..");
             System.out.println("If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");
@@ -164,7 +165,7 @@ public class InformationProcessingOperations {
     public static void addGivenDriver(Connection connection, Statement statement, String driverID) {
     	try {
         	String query = "INSERT INTO Driver (DriverID,Status,DriverName) VALUES (?, ?, ?)";
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
  
             System.out.println("Specify the Status of the Driver (V, E, S): ");
             String driverStatus = scanner.nextLine();
@@ -196,7 +197,7 @@ public class InformationProcessingOperations {
 
     public static void updateParkingLot(Connection connection, Statement statement) {
     	try {
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             
             System.out.println("You are updating a Parking Lot..");
             System.out.println("Specify the Parking Lot ID for Updating: ");
@@ -253,7 +254,7 @@ public class InformationProcessingOperations {
          */
         
     	try {
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             String query;
             System.out.println("You are updating the Space in a Parking Lot..");
             System.out.println("Specify the Parking Lot ID for the update: ");
@@ -331,7 +332,7 @@ public class InformationProcessingOperations {
          *       as it might involve updating Permit details too. Although, I don't see any concern.
          */
     	try {
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             
             System.out.println("You are updating a Driver Information..");
             System.out.println("Specify the Driver ID for the update: ");
@@ -383,7 +384,7 @@ public class InformationProcessingOperations {
     public static void deleteParkingLot(Connection connection, Statement statement) {
     	try {
         	String query = deleteParkingLotQuery;
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             
             System.out.println("You are deleting a Parking Lot..");
             System.out.println("Specify the Parking Lot ID to be deleted: ");
@@ -413,7 +414,7 @@ public class InformationProcessingOperations {
     public static void deleteZone(Connection connection, Statement statement) {
     	try {
         	String query = deleteZoneQuery;
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             
             System.out.println("You are deleting a Zone in the Parking Lot..");
             System.out.println("Specify the Parking Lot ID in which Zone to be deleted: ");
@@ -446,7 +447,7 @@ public class InformationProcessingOperations {
     public static void deleteSpace(Connection connection, Statement statement) {
     	try {
         	String query;
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             System.out.println("You are deleting a Space in the Zone of a Parking Lot..");
             System.out.println("Specify the Parking Lot ID in which Space is to be deleted: ");
             String parkingLotID = scanner.nextLine();
@@ -515,7 +516,7 @@ public class InformationProcessingOperations {
     public static void deleteDriver(Connection connection, Statement statement) {
     	try {
             String permitID = null;
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
  
             System.out.println("You are deleting a Driver from the System..");
             System.out.println("Delete the Driver. If the driver is a Visitor, please specify the Phone Number. Otherwise, provide the University ID: ");

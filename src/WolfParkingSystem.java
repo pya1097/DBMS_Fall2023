@@ -344,10 +344,10 @@ public class WolfParkingSystem {
 			stmt.executeUpdate("INSERT INTO IssuedTo (CitationNumber, CarLicenseNumber)\n"
 					+ "VALUES\n"
 					+ "(2, 'CRICKET');");
-			
+			/*
 			stmt.executeUpdate("INSERT INTO Pays (CitationNumber, DriverID)\n"
 					+ "VALUES\n"
-					+ "(1, '122765234');");
+					+ "(1, '122765234');"); */
 			
 			stmt.executeUpdate("INSERT INTO Appeals (CitationNumber, DriverID, DriverRemark, AdminRemark)\n"
 					+ "VALUES\n"

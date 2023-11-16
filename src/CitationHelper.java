@@ -3,41 +3,42 @@ import java.sql.*;
 import java.sql.Statement;
 import java.util.Scanner;
 import java.util.*;
+import java.time.LocalDate;
 public class CitationHelper {
     static Scanner scanner = new Scanner(System.in);
 
     public static void addCitation(Statement statement) {
         try{
             System.out.println("\nPlease enter the Parking Lot ID");
-            Integer ParkingLotID = scanner.nextInt();
+            Integer ParkingLotID = Integer.parseInt(scanner.nextLine());
 
             System.out.println("Please enter the category of violation");
             String CategoryType = scanner.nextLine();
 
             System.out.println("\nPlease enter the amount due");
-            Integer AmountDue = scanner.nextInt();
+            Integer AmountDue = Integer.parseInt(scanner.nextLine());
 
             System.out.println("\nPlease enter the Car License Number");
-            String CarLicenseNumber = scanner.next();
+            String CarLicenseNumber = scanner.nextLine();
 
             String Model;
             String Color;
             String Manufacturer;
-            Integer Year;
+            String Year;
 
             ResultSet carExists = statement.executeQuery("select * from Vehicle where CarLicenseNumber='"+CarLicenseNumber+"';");
             if(!carExists.next()){
                 System.out.println("\nPlease enter the model of vehicle");
-                Model = scanner.next();
+                Model = scanner.nextLine();
 
                 System.out.println("\nPlease enter the color of vehicle");
-                Color = scanner.next();
+                Color = scanner.nextLine();
 
                 System.out.println("\nPlease enter the manufacturer of vehicle");
-                Manufacturer = scanner.next();
+                Manufacturer = scanner.nextLine();
 
                 System.out.println("\nPlease enter the year of vehicle");
-                Year = scanner.nextInt();
+                Year = scanner.nextLine();
 
                 statement.executeUpdate("INSERT INTO Vehicle (CarLicenseNumber,Model,Color,Manufacturer,`Year`) VALUES\n"
                         + "('"+CarLicenseNumber+"', '"+Model+"', '"+Color+"', '"+Manufacturer+"', "+Year+")");
@@ -65,10 +66,10 @@ public class CitationHelper {
     public static void appealCitationByDriver(Statement statement){
        try{
            System.out.println("Please enter the Citation Number");
-           Integer CitationNumber = scanner.nextInt();
+           Integer CitationNumber = Integer.parseInt(scanner.nextLine());
 
            System.out.println("Please enter the Driver ID");
-           String DriverID = scanner.next();
+           String DriverID = scanner.nextLine();
 
            System.out.println("Please enter the Driver Remark");
            String DriverRemark = scanner.nextLine();
@@ -86,10 +87,10 @@ public class CitationHelper {
     public static void updateCitationAppealByAdmin(Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
-            Integer CitationNumber = scanner.nextInt();
+            Integer CitationNumber = Integer.parseInt(scanner.nextLine());
 
             System.out.println("Please enter the Driver ID");
-            String DriverID = scanner.next();
+            String DriverID = scanner.nextLine();
 
             System.out.println("Please enter the Admin Remark");
             String AdminRemark = scanner.nextLine();
@@ -105,10 +106,10 @@ public class CitationHelper {
     public static void updateCitationAppealByDriver(Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
-            Integer CitationNumber = scanner.nextInt();
+            Integer CitationNumber = Integer.parseInt(scanner.nextLine());
 
             System.out.println("Please enter the Driver ID");
-            String DriverID = scanner.next();
+            String DriverID = scanner.nextLine();
 
             System.out.println("Please enter the Admin Remark");
             String DriverRemark = scanner.nextLine();
@@ -124,27 +125,91 @@ public class CitationHelper {
     public static void updateCitationPaymentInfo(Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
-            Integer CitationNumber = scanner.nextInt();
-
+            Integer CitationNumber = Integer.parseInt(scanner.nextLine());
+            String DriverID = getDriverIdOfCitation(statement,CitationNumber);
 //       DO WE NEED TO DELETE ENTRY FROM ISSUED TO?????
 
             statement.executeUpdate("Update Citation set PaymentStatus='Paid', AmountDue = 0 where CitationNumber="+CitationNumber+";");
+            //add to pays table
+            statement.executeUpdate("INSERT INTO Pays (CitationNumber, DriverID)\n"
+                    + "VALUES\n"
+                    + "("+CitationNumber+", '"+DriverID+"');");
+            
+            System.out.println("Payment Status updated successfully..");
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
+    public static String getDriverIdOfCitation(Statement statement, Integer CitationNumber) {
+    	String DriverId = " ";
+    	try {
+    		ResultSet result = statement.executeQuery("SELECT CarLicenseNumber FROM IssuedTo WHERE CitationNumber ="+CitationNumber+";");
+    		while(result.next()) {
+    			String CarLicenseNumber = result.getString("CarLicenseNumber");
+    			ResultSet result1 = statement.executeQuery("SELECT DriverID FROM Owns WHERE CarLicenseNumber ="+CarLicenseNumber+";");
+    			DriverId = result1.getString("DriverID");
+    			return DriverId;
+    		}
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return DriverId;
+    }
+    
     public static  void updateCitation(Statement statement){
         try{
             System.out.println("Please enter the Citation Number");
-            Integer CitationNumber = scanner.nextInt();
-
-            while(true){
-                System.out.println("\nWhat data would you like to update for the given Car License Number");
-                System.out.println("(1) ");
-                System.out.println("(2) Enter Citation Number");
-                System.out.println("(3) Enter Car License Number");
-            }
+            Integer CitationNumber = Integer.parseInt(scanner.nextLine());
+            String DriverID = getDriverIdOfCitation(statement,CitationNumber);
+            String value;
+	        String option;
+            
+            System.out.println("What data would you like to update for the given Citation\n");
+            System.out.println("1. Update ParkingLotID:");
+	        System.out.println("2. Update CitationDate:");
+	        System.out.println("3. Update CitationTime:");
+	        System.out.println("4. CategoryType: (No Permit category cannot be updated)");
+	        System.out.println("5. AmountDue:");
+	        System.out.println("6. PaymentStatus:");
+	        option = scanner.nextLine();
+	        System.out.println("Enter the new value:");
+	        value = scanner.nextLine();
+	        
+	        switch(option) {
+	        case "1" :
+	        	statement.executeUpdate("Update Citation set ParkingLotID ="+ Integer.parseInt(value)+" where CitationNumber="+CitationNumber+";");
+	        	break;
+	        case "2" :
+	        	statement.executeUpdate("Update Citation set CitationDate ='"+ value +"' where CitationNumber="+CitationNumber+";");
+	        	break;
+	        case "3":
+	        	statement.executeUpdate("Update Citation set CitationTime ='"+ value +"' where CitationNumber="+CitationNumber+";");
+	        	break;
+	        case "4":
+	        	statement.executeUpdate("Update Citation set CategoryType ='"+ value +"' where CitationNumber="+CitationNumber+";");
+	        	break;
+	        case "5":
+	        	statement.executeUpdate("Update Citation set AmountDue ="+ value +" where CitationNumber="+CitationNumber+";");
+	        	break;
+	        case "6":
+	        	if(DriverID.equals(" ")) {
+	            	System.out.println("Payment Status cannot be updated for No Permit Category Citations.");
+	            	return;
+	            }
+	        	statement.executeUpdate("Update Citation set PaymentStatus ='"+ value +"' where CitationNumber="+CitationNumber+";");
+	        	if(value.equals("Paid")) {
+	        		statement.executeUpdate("INSERT INTO Pays (CitationNumber, DriverID)\n"
+	                        + "VALUES\n"
+	                        + "("+CitationNumber+", '"+DriverID+"');");
+	        	}
+	        	break;
+	        default:
+                System.out.println("Choose appropriate options only. Try again..");
+                throw new IllegalArgumentException("Invalid Choice is Selected: " + option);
+	        }
+              System.out.println("Citation updated Successfully..") ;
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -152,17 +217,17 @@ public class CitationHelper {
 
     public static void checkValidatiyOfVehicle( Statement statement){
         try {
-            System.out.println("\nPlease enter the Car License Number");
-            String CarLicenseNumber = scanner.next();
+            System.out.println("Please enter the Car License Number:");
+            String CarLicenseNumber = scanner.nextLine();
 
-            System.out.println("\nPlease enter the Parking Lot ID");
-            Integer ParkingLotID = scanner.nextInt();
+            System.out.println("Please enter the Parking Lot ID:");
+            Integer ParkingLotID = Integer.parseInt(scanner.nextLine());
 
-            System.out.println("\nPlease enter the Zone ID");
-            String ZoneID = scanner.next();
+            System.out.println("Please enter the Zone ID:");
+            String ZoneID = scanner.nextLine();
 
-            System.out.println("\nPlease enter the Space Type");
-            String SpaceType = scanner.next();
+            System.out.println("Please enter the Space Type:");
+            String SpaceType = scanner.nextLine();
              ResultSet result = statement
                     .executeQuery("SELECT\n" +
                             "CASE \n" +
@@ -186,7 +251,7 @@ public class CitationHelper {
     public static void retrieveCitationDetails( Statement statement){
         try {
 
-            System.out.println("\nHow would you like to retrieve Citation Details?");
+            System.out.println("How would you like to retrieve Citation Details?\n");
             System.out.println("(1) Enter Citation Number and Car License Number");
             System.out.println("(2) Enter Citation Number");
             System.out.println("(3) Enter Car License Number");
@@ -194,28 +259,28 @@ public class CitationHelper {
             String CarLicenseNumber=null;
             Integer CitationNumber=null;
 
-            int type = scanner.nextInt();
+            String type = scanner.nextLine();
             ResultSet result=null;
             switch(type){
-                case 1:
-                    System.out.println("\nPlease enter the Citation Number");
-                    CitationNumber = scanner.nextInt();
+                case "1":
+                    System.out.println("Please enter the Citation Number");
+                    CitationNumber = Integer.parseInt(scanner.nextLine());
 
-                    System.out.println("\nPlease enter the Car Lisence Number");
-                    CarLicenseNumber = scanner.next();
+                    System.out.println("Please enter the Car Lisence Number");
+                    CarLicenseNumber = scanner.nextLine();
                     result = statement.executeQuery("select c.CitationNumber,c.ParkingLotID,c.CitationDate,c.CitationTime,c.CategoryType,c.AmountDue,c.PaymentStatus from Citation c , " +
                             "IssuedTo it where c.CitationNumber =it.CitationNumber and it.CitationNumber = "+CitationNumber+" and it.CarLicenseNumber='"+CarLicenseNumber+"';");
                     break;
-                case 2:
-                    System.out.println("\nPlease enter the Citation Number");
-                    CitationNumber = scanner.nextInt();
+                case "2":
+                    System.out.println("Please enter the Citation Number");
+                    CitationNumber = Integer.parseInt(scanner.nextLine());
                     result = statement
                             .executeQuery("SELECT * FROM Citation WHERE CitationNumber = "+CitationNumber+";\n");
 
                     break;
-                case 3:
+                case "3":
                     System.out.println("\nPlease enter the Car Lisence Number");
-                    CarLicenseNumber = scanner.next();
+                    CarLicenseNumber = scanner.nextLine();
                     result = statement.executeQuery("select c.CitationNumber,c.ParkingLotID,c.CitationDate,c.CitationTime,c.CategoryType,c.AmountDue,c.PaymentStatus from Citation c , " +
                             "IssuedTo it where c.CitationNumber =it.CitationNumber and it.CarLicenseNumber='"+CarLicenseNumber+"';");
                     break;
@@ -244,16 +309,16 @@ public class CitationHelper {
     public static void calculateFine( Statement statement){
         try {
             System.out.println("\nPlease enter the Car Lisence Number");
-            String CarLicenseNumber = scanner.next();
+            String CarLicenseNumber = scanner.nextLine();
 
             System.out.println("\nPlease enter the Parking Lot ID");
-            Integer ParkingLotID = scanner.nextInt();
+            Integer ParkingLotID = Integer.parseInt(scanner.nextLine());
 
             System.out.println("\nPlease enter the Zone ID");
-            String ZoneID = scanner.next();
+            String ZoneID = scanner.nextLine();
 
             System.out.println("\nPlease enter the Space Type");
-            String SpaceType = scanner.next();
+            String SpaceType = scanner.nextLine();
             ResultSet result = statement
                     .executeQuery("SELECT\n" +
                             "case \n" +
