@@ -114,6 +114,7 @@ public class ReportOperations {
     //Case2:
     public static void getNoOfViolatingVehicles(Connection connection, Statement statement) {
     	try {
+            System.out.println("You are generating a report for number of vehicles that are currently viol..");
         	String query = "SELECT count(distinct(CarLicenseNumber)) as NumberOfViolatingVehicles from IssuedTo i INNER JOIN Citation c on i.CitationNumber = c.CitationNumber WHERE c.PaymentStatus='Due';";
         	ResultSet result = statement.executeQuery(query);
         	if(!result.isBeforeFirst()) {
@@ -195,23 +196,21 @@ public class ReportOperations {
     public static void getPermitInformation(Connection connection, Statement statement) {
     	try {           
             System.out.println("You are retrieving Permit Information..");
-//            System.out.println("(1) Retrieve Permit information using Driver ID");
-     		
     		ResultSet result =null;
-
-    			System.out.println("\nEnter Enter DriverId:");
-    			String DriverId = scanner.nextLine();
-    			result = statement.executeQuery("select p.PermitID, p.ParkingLotID, p.ZoneId, p.SpaceType, p.StartDate, p.ExpirationDate, p.ExpirationTime, p.PermitType from Permit p, Driver d, Holds h where p.PermitID=h.PermitID and h.DriverID=d.DriverID and d.DriverID="+DriverId+";");
-    			if(!result.isBeforeFirst()) {
-                    System.out.println("No citation data present!");
-    			}else {
-    				while(result.next()) {
-    					System.out.println("\n Permit ID:"+ result.getString("PermitID") + "\n Parking Lot ID:"+result.getString("ParkingLotID")+"\n ZoneId"+result.getString("ZoneId")+"\n SpaceType"+result.getString("SpaceType")+"\n StartDate"+result.getString("StartDate")+"\n ExpirationDate"+result.getString("ExpirationDate")+"\n PermitType"+result.getString("PermitType"));
-    				}
-    			}
+            
+            System.out.println("\nIf the driver is a Visitor, please specify the Phone Number. Otherwise, specify the University ID: ");
+            String DriverId = scanner.nextLine();
+            result = statement.executeQuery("select p.PermitID, p.ParkingLotID, p.ZoneId, p.SpaceType, p.StartDate, p.ExpirationDate, p.ExpirationTime, p.PermitType, d.DriverName as Name from Permit p, Driver d, Holds h where p.PermitID=h.PermitID and h.DriverID=d.DriverID and d.DriverID='"+DriverId+"';");
+            if(!result.isBeforeFirst()) {
+                System.out.println("No Permit Information Matches!");
+            } else {
+                while(result.next()) {
+                    System.out.println("\n Driver Name: "+ result.getString("Name") + "\n Permit ID:"+ result.getString("PermitID") + "\n Parking Lot ID: "+result.getString("ParkingLotID")+"\n Zone ID: "+result.getString("ZoneId")+"\n Space Type: "+result.getString("SpaceType")+"\n StartDate: "+result.getString("StartDate")+"\n Expiration Date: "+result.getString("ExpirationDate")+"\n PermitType: "+result.getString("PermitType"));
+                }
+    		}
     		
     	} catch (Exception e) {
-            System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
+            System.out.println("Issue in getPermitInformation() Operation. Hardware/Inputs are malformed..");
             e.printStackTrace();
         }
     }
@@ -220,7 +219,7 @@ public class ReportOperations {
     //Case6:
     public static void getAvailableSpaceNumber(Connection connection, Statement statement) {
     	try {           
-            System.out.println("You are retrieving available space in a Parking Lot..");
+            System.out.println("You are Retrieving an available space for a Parking Lot, Zone and Space..");
             System.out.println("Enter Parking Lot ID: ");
             String parkingLotID = scanner.nextLine();
             System.out.println("Enter Parking Zone ID: ");
@@ -228,18 +227,16 @@ public class ReportOperations {
             System.out.println("Enter Space Type: ");
             String spaceType = scanner.nextLine();
        
-            ResultSet result = statement.executeQuery("select SpaceNumber from Space where AvailabilityStatus = 'Y' and ParkingLotID ="+ parkingLotID+" and ZoneID = "+parkingZoneID+" and SpaceType ="+spaceType+"  limit 1;");
+            ResultSet result = statement.executeQuery("select SpaceNumber from Space where AvailabilityStatus = 'Y' and ParkingLotID ="+ parkingLotID+" and ZoneID = '"+parkingZoneID+"' and SpaceType ='"+spaceType+"'  limit 1;");
             if(!result.isBeforeFirst()) {
-                System.out.println("No available space number present!");
-			}else {
+                System.out.println("No Space Available!!!");
+			} else {
 				while(result.next()) {
-	            	System.out.println("Space Number: "+ result.getString("SpaceNumber"));
+	            	System.out.println("One of the Available Space Number For the Given Requirements: "+ result.getString("SpaceNumber"));
 	            }
-			}
-            
-    		
+			}  
     	} catch (Exception e) {
-            System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
+            System.out.println("Issue in getAvailableSpaceNumber() Operation. Hardware/Inputs are malformed..");
             e.printStackTrace();
         }
     }
@@ -247,7 +244,7 @@ public class ReportOperations {
     //Case7:
     public static void getNoOfAvailableSpaces(Connection connection, Statement statement) {
     	try {           
-            System.out.println("You are retrieving available space in a Parking Lot..");
+            System.out.println("You are Retrieving the Number of Available Spaces in a Given Parking Lot..");
             System.out.println("Enter Parking Lot ID: ");
             String parkingLotID = scanner.nextLine();
             System.out.println("Enter Parking Zone ID: ");
@@ -255,18 +252,16 @@ public class ReportOperations {
             System.out.println("Enter Space Type: ");
             String spaceType = scanner.nextLine();
        
-            ResultSet result = statement.executeQuery("select count(*) as NoOfSpaces from Space where AvailabilityStatus = 'Y' and ParkingLotID ="+ parkingLotID+" and ZoneID = "+parkingZoneID+" and SpaceType ="+spaceType+"  limit 1;");
+            ResultSet result = statement.executeQuery("select count(*) as NoOfSpaces from Space where AvailabilityStatus = 'Y' and ParkingLotID ="+ parkingLotID+" and ZoneID = '"+parkingZoneID+"' and SpaceType = '"+spaceType+"';");
             if(!result.isBeforeFirst()) {
-                System.out.println("No available space number present!");
-			}else {
+                System.out.println("Give Appropriate Inputs!");
+			} else {
 				while(result.next()) {
 	            	System.out.println("Number of Available Spaces: "+ result.getString("NoOfSpaces"));
 	            }
-			}
-            
-    		
+			}	
     	} catch (Exception e) {
-            System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
+            System.out.println("Issue in getNoOfAvailableSpaces() Operation. Hardware/Inputs are malformed..");
             e.printStackTrace();
         }
     }
@@ -274,9 +269,9 @@ public class ReportOperations {
     //Case8
     public static void getNoOfExpiredPermits(Connection connection, Statement statement) {
     	try {           
-    		ResultSet result = statement.executeQuery("select count(*) as NoOfExpiredPermits from Permit where ExpirationDate< CURRENT_DATE();");
+    		ResultSet result = statement.executeQuery("select count(*) as NoOfExpiredPermits from Permit where ExpirationDate < CURRENT_DATE();");
             if(!result.isBeforeFirst()) {
-                System.out.println("No expired permits present!");
+                System.out.println("No Output Fetched..");
 			}else {
 				while(result.next()) {
 	            	System.out.println("Number of expired permits: "+ result.getString("NoOfExpiredPermits"));
@@ -284,7 +279,7 @@ public class ReportOperations {
 			}
             
     	} catch (Exception e) {
-            System.out.println("Issue in addParkingLot Operation. Hardware/Inputs are malformed..");
+            System.out.println("Issue in getNoOfExpiredPermits Operation. Hardware/Inputs are malformed..");
             e.printStackTrace();
         }
     }    

@@ -231,17 +231,16 @@ public class MenuOfOperations {
                     ReportOperations.getEmployeesWithPermits(connection, stmt);
                     break;
                 case 5:
-                    // retrieveCitationDetails(CitationNumber, CarLicensenceNumber)
+                    ReportOperations.getPermitInformation(connection, stmt);
                     break;
                 case 6:
-                    // checkValidityOfParking(CarLicensenceNumber, ParkingLotID, ZoneID, SpaceNumber, SpaceType)
+                	ReportOperations.getAvailableSpaceNumber(connection, stmt);
                     break;
                 case 7:
-                    // Newly added. This was not there in our Project 1.
-                    // updateCitation(ParkingLotID, CitationDate, CitationTime, CategoryType, AmountDue) 
+                    ReportOperations.getNoOfAvailableSpaces(connection, stmt);
                     break;
                 case 8:
-                    // calculateFine(SpaceType, CategoryOfIssue)
+                    ReportOperations.getNoOfExpiredPermits(connection, stmt);
                     break;
                 default:
                     System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");

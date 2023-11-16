@@ -64,13 +64,10 @@ public class WolfParkingSystem {
 		/*
 		 * Description: Initializes the Connection to Database.
 		 * 
-		 * TODO: Add Sample Data Given by TAs after connectToDatabase();
 		 */
 		try {
 			connectToDatabase();
-			// Add the DDL/DML Commands for Tables and Data.
-			// initDBTables();
-			 scanner = new Scanner(System.in);
+			scanner = new Scanner(System.in);
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
@@ -85,7 +82,7 @@ public class WolfParkingSystem {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	   }
+	}
 	
 	private static void initDBTables() throws SQLException {
 		try { 
@@ -372,7 +369,7 @@ public class WolfParkingSystem {
 			System.out.println("(2) Display Operations Related to Maintaining Permits and Vehicle Information of Drivers.");
 			System.out.println("(3) Display Operations Related to Generating and Maintaining Citations.");
 			System.out.println("(4) Display Operations Related to Reports.");
-			System.out.println("(5) Initialize DB.");
+			System.out.println("(5) Reload The Demo Data Again.");
 			System.out.println("(0) Exit the Menu.");
 			System.out.print("\n Select your choice: ");
 			
