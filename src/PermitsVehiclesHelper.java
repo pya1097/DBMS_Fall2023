@@ -29,10 +29,10 @@ public class PermitsVehiclesHelper {
 	private static PreparedStatement carLicenseNumberFromPermitQuery;
 	private static ResultSet result = null;
 	
-	public static final String updateVehicleModelQuery = "UPDATE Vehcile SET Model = ? WHERE CarLicenseNumber = ?;";
-	public static final String updateVehicleColorQuery = "UPDATE Vehcile SET Color = ? WHERE CarLicenseNumber = ?;";
-	public static final String updateVehicleManfQuery = "UPDATE Vehcile SET Manufacturer = ? WHERE CarLicenseNumber = ?;";
-	public static final String updateVehicleYearQuery = "UPDATE Vehcile SET Year = ? WHERE CarLicenseNumber = ?;";
+	public static final String updateVehicleModelQuery = "UPDATE Vehicle SET Model = ? WHERE CarLicenseNumber = ?;";
+	public static final String updateVehicleColorQuery = "UPDATE Vehicle SET Color = ? WHERE CarLicenseNumber = ?;";
+	public static final String updateVehicleManfQuery = "UPDATE Vehicle SET Manufacturer = ? WHERE CarLicenseNumber = ?;";
+	public static final String updateVehicleYearQuery = "UPDATE Vehicle SET Year = ? WHERE CarLicenseNumber = ?;";
 	public static final String updatePermitPLIDQuery = "UPDATE Permit SET ParkingLotID = ? WHERE PermitID = ?;";
 	public static final String updatePermitZoneQuery = "UPDATE Permit SET ZoneID = ? WHERE PermitID = ?;";
 	public static final String updatePermitSTQuery = "UPDATE Permit SET SpaceType = ? WHERE PermitID = ?;";
@@ -489,6 +489,7 @@ public class PermitsVehiclesHelper {
 			try {
 				String vehicleQuery = "DELETE FROM Vehicle WHERE CarLicenseNumber = ?";
 				String carLicenseNumber;
+				// BEGIN TRANSACTION
 	        	connection.setAutoCommit(false);
 	        	query = "SELECT CarLicenseNumber from Given WHERE PermitID = ? ";
 	        	selectVehicleListQuery = connection.prepareStatement(query);
@@ -505,14 +506,17 @@ public class PermitsVehiclesHelper {
 	        	deletePermitQuery = connection.prepareStatement(query);
 	        	deletePermitQuery.setInt(1, Integer.parseInt(permitID));
 	        	deletePermitQuery.executeUpdate();
+	        	// IF NO ERROR DURING THE EXECUTION OF THE ABOVE OPERATIONS, COMMIT THE CHANGES
 	            connection.commit();
 	            System.out.println("Permit is Deleted Successfully!!");
 	        }catch(SQLException error) {
 	        	System.out.println(error.getMessage());
 	            System.out.println("Issue in deletePermit Operation. Hardware/Inputs are malformed..");
+	            // IF THERE ARE ANY ISSUES DURING THE DELETION FOR ANY REASON, WE ROLLBACK THE CHANGES
 	            connection.rollback();
 	            System.out.println("Rollback Complete!");
 	        }finally {
+	        	// END OF THE TRANSACTION
 	        	connection.setAutoCommit(true);
 	        }
 		}catch(Exception e) {

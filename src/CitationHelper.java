@@ -7,6 +7,7 @@ public class CitationHelper {
     static Scanner scanner = new Scanner(System.in);
 
     public static void addCitation(Connection connection,Statement statement) {
+    	// Responsible for adding citations
         try{
             System.out.println("\nPlease enter the Parking Lot ID");
             Integer ParkingLotID = Integer.parseInt(scanner.nextLine());
@@ -25,6 +26,7 @@ public class CitationHelper {
             String Manufacturer;
             String Year;
             try {
+            	// START THE TRANSACTION
             	connection.setAutoCommit(false);
                 ResultSet carExists = statement.executeQuery("select * from Vehicle where CarLicenseNumber='"+CarLicenseNumber+"';");
                 if(!carExists.next()){
@@ -55,14 +57,17 @@ public class CitationHelper {
                             + "VALUES\n"
                             + "("+CitationNumber.getInt("CitationNumber")+", '"+CarLicenseNumber+"');");
                 }
+                // IF NO ERROR DURING THE EXECUTION OF THE ABOVE OPERATIONS, COMMIT THE CHANGES
                 connection.commit();
                 System.out.println("Citation Added successfully ");
             }catch(SQLException error) {
 	        	System.out.println(error.getMessage());
 	            System.out.println("Issue in addCitation Operation. Hardware/Inputs are malformed..");
+	            // IF THERE ARE ANY ISSUES DURING THE ADDITION OF A CITATION, THEN WE ROLLBACK THE TRANSACTION BACK TO THE BEGINNING
 	            connection.rollback();
 	            System.out.println("Rollback Complete!");
 	        }finally {
+	        	// END OF THE TRANSACTION
 	        	connection.setAutoCommit(true);
 	        }
             
@@ -141,7 +146,6 @@ public class CitationHelper {
             	 System.out.println("Payment Status cannot be updated for No Permit Category Citations.");
             	 return;
             }
-//       DO WE NEED TO DELETE ENTRY FROM ISSUED TO?????
 
             statement.executeUpdate("Update Citation set PaymentStatus='Paid', AmountDue = 0 where CitationNumber="+CitationNumber+";");
             //add to pays table

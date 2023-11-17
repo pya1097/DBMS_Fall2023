@@ -8,7 +8,7 @@ public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;
 	static Scanner scanner;
-	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jkteluku";
+	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/smashet";
     
 	public static void welcomePrompt() {
 		String projectName = "CSC 540 Project Demo: Wolf Parking Management System";
@@ -47,14 +47,12 @@ public class WolfParkingSystem {
 		 * Description: This method helps in connecting to
 		 * the Database System of the Course
 		 * 
-		 * TODO: Add the drop table operations after the database is connected
-		 * so as to fill the data.
 		 * 
 		 */
 		
 		Class.forName("org.mariadb.jdbc.Driver");
-        String user = "jkteluku";
-        String password = "200477972";
+        String user = "smashet";
+        String password = "200536263";
         connection = DriverManager.getConnection(url, user, password);
         stmt = connection.createStatement();
             	
@@ -75,18 +73,20 @@ public class WolfParkingSystem {
 	}
 	
 	private static void prepareDB() {
+		// Prepares the DB
 	    try {
-			stmt.executeUpdate("DROP DATABASE jkteluku;");
-			stmt.executeUpdate("CREATE DATABASE jkteluku;");
-			stmt.executeUpdate("USE jkteluku;");
+			stmt.executeUpdate("DROP DATABASE smashet;");
+			stmt.executeUpdate("CREATE DATABASE smashet;");
+			stmt.executeUpdate("USE smashet;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private static void initDBTables() throws SQLException {
+		// Add all the responsible tables of our design
 		try { 
-			
+			System.out.println("creating tables");
 			stmt.executeUpdate("CREATE TABLE ParkingLot (\n"
 					+ "	ParkingLotID INT AUTO_INCREMENT,\n"
 					+ "	Name VARCHAR(50) NOT NULL,\n"
@@ -252,7 +252,9 @@ public class WolfParkingSystem {
 	}
 	
 	private static void loadDataForDemo() throws SQLException {
+		// Demo Data from the Course has been added.
 		try {
+			System.out.println("loading demo data");
 			stmt.executeUpdate("INSERT INTO ParkingLot (ParkingLotID, Name, Address) VALUES\n"
 					+ "(1, 'Poulton Deck', '1021 Main Campus Dr Raleigh, NC, 27606'),\n"
 					+ "(2, 'Partners Way Deck', '851 Partners Way Raleigh, NC, 27606'),\n"
@@ -263,11 +265,11 @@ public class WolfParkingSystem {
 			
 			stmt.executeUpdate("INSERT INTO Space (ParkingLotID, ZoneID, SpaceType, SpaceNumber, AvailabilityStatus) VALUES\n"
 					+"(1, 'A', 'Electric', 1, 'N'),\n"
-					+ "(2, 'A', 'Regular', 1, 'N'),\n"
-					+ "(3, 'A', 'Regular', 2, 'N'),\n"
-					+ "(1, 'AS', 'Compact Car', 1, 'N'),\n"
-					+ "(2, 'V', 'Handicap', 1, 'N'),\n"
-					+ "(3, 'V', 'Regular', 1, 'N');");
+					+ "(1, 'A', 'Regular', 1, 'N'),\n"
+					+ "(1, 'A', 'Regular', 2, 'N'),\n"
+					+ "(2, 'AS', 'Compact Car', 1, 'N'),\n"
+					+ "(1, 'V', 'Handicap', 1, 'N'),\n"
+					+ "(1, 'V', 'Regular', 1, 'N');");
 					
 			stmt.executeUpdate("INSERT INTO Vehicle (CarLicenseNumber,Model,Color,Manufacturer,`Year`) VALUES\n"
 					+ "( 'SBF', 'GT-R-Nismo', 'Pearl White TriCoat', 'Nissan', 2024),\n"
@@ -341,11 +343,6 @@ public class WolfParkingSystem {
 			stmt.executeUpdate("INSERT INTO IssuedTo (CitationNumber, CarLicenseNumber)\n"
 					+ "VALUES\n"
 					+ "(2, 'CRICKET');");
-			/*
-			stmt.executeUpdate("INSERT INTO Pays (CitationNumber, DriverID)\n"
-					+ "VALUES\n"
-					+ "(1, '122765234');"); */
-			
 			stmt.executeUpdate("INSERT INTO Appeals (CitationNumber, DriverID, DriverRemark, AdminRemark)\n"
 					+ "VALUES\n"
 					+ "(2, '122765234', 'Requesting review of citation', 'Under review by admin');");
@@ -357,6 +354,7 @@ public class WolfParkingSystem {
 	}
 	
 	public static void welcomeMenu() throws SQLException {
+		// Operations for the applications are given in this menu
 		String line = "*".repeat(120);
 		MenuOfOperations menu = new MenuOfOperations();
 		String choiceNumber;
