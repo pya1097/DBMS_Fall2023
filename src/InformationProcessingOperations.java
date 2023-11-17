@@ -23,11 +23,12 @@ public class InformationProcessingOperations {
     public static final String deleteDriverQuery = "DELETE FROM Driver WHERE DriverID = ?";
     public static final String deletePermitQuery = "DELETE FROM Permit WHERE PermitID = ?";
     public static final String selectPermitIDToDeleteQuery = "SELECT PermitID FROM Holds WHERE DriverID =?";
-    // public static final String updateZoneIDQuery = "UPDATE Zone SET ZoneID = ? WHERE ParkingLotID = ? AND ZoneID = ?";
+
     
     
     
     public static void addParkingLot(Connection connection, Statement statement) {
+    	// Adding a new parking lot
     	try {
         	String query = "INSERT INTO ParkingLot (ParkingLotID, Name, Address) VALUES (?, ?, ?)";
             scanner = new Scanner(System.in);
@@ -65,6 +66,7 @@ public class InformationProcessingOperations {
     }
 
     public static void addZone(Connection connection, Statement statement) {
+    	// Adding a new zone to a given parking lot
     	try {
         	String query = "INSERT INTO Zone (ParkingLotID, ZoneID) VALUES (?, ?)";
             scanner = new Scanner(System.in);
@@ -98,6 +100,7 @@ public class InformationProcessingOperations {
     }
     
     public static void addSpace(Connection connection, Statement statement) {
+    	// Adding a new space to a given zone and it's respective parking lot.
     	try {
         	String query = "INSERT INTO Space (ParkingLotID, ZoneID, SpaceType, SpaceNumber, AvailabilityStatus) VALUES (?, ?, ?, ?, ?)";
             scanner = new Scanner(System.in);
@@ -112,7 +115,7 @@ public class InformationProcessingOperations {
             System.out.println("Specify the Space Number you want to add: ");
             String spaceNumber = scanner.nextLine();
             System.out.println("Specify the Availability Status (Y, N or Optional - Simply press Enter without entering any value): ");
-            // If user does not want to pass anything, then length will remain zero. So, based on that we can add the check on Optional Param.
+
             String availabilityStatus = "";
             availabilityStatus = scanner.nextLine();
        
@@ -142,11 +145,8 @@ public class InformationProcessingOperations {
     }
 
     public static void addDriver(Connection connection, Statement statement) {
-        /*
-         * TODO: This method should be overloaded for dependent operations.
-         *       For example - IssuePermit Will need to call addDriver and add details.
-         *       Needed for such cases. Coordinate with Owner of Operations 2.
-         */
+    	// Adding a new driver information into the system.
+
     	try {
         	
             scanner = new Scanner(System.in);
@@ -196,6 +196,7 @@ public class InformationProcessingOperations {
     }
 
     public static void updateParkingLot(Connection connection, Statement statement) {
+    	// Updating a parking lot.
     	try {
             scanner = new Scanner(System.in);
             
@@ -247,12 +248,7 @@ public class InformationProcessingOperations {
     }
 
     public static void updateSpace(Connection connection, Statement statement) {
-        /*
-         * TODO: This method should be overloaded for dependent operations.
-         *       For example - Car Entering Scenario will need to call Associated to fetch the available space, 
-         *       generate parking space number. For the space number, we should update the availablity status.
-         */
-        
+    	// Updating the space attributes
     	try {
             scanner = new Scanner(System.in);
             String query;
@@ -327,10 +323,7 @@ public class InformationProcessingOperations {
     }
 
     public static void updateDriverInfo(Connection connection, Statement statement) {
-        /**
-         * TODO: Discuss with team on what else would be update when we update Status. This is catastrophic operation
-         *       as it might involve updating Permit details too. Although, I don't see any concern.
-         */
+    	// Update a driver info.
     	try {
             scanner = new Scanner(System.in);
             
@@ -382,6 +375,7 @@ public class InformationProcessingOperations {
     } 
 
     public static void deleteParkingLot(Connection connection, Statement statement) {
+    	// Responsible for deleting the parking lot from the system.
     	try {
         	String query = deleteParkingLotQuery;
             scanner = new Scanner(System.in);
@@ -412,6 +406,7 @@ public class InformationProcessingOperations {
     }
 
     public static void deleteZone(Connection connection, Statement statement) {
+    	// Responsible for deleting the Zone from the system.
     	try {
         	String query = deleteZoneQuery;
             scanner = new Scanner(System.in);
@@ -445,6 +440,7 @@ public class InformationProcessingOperations {
     }
 
     public static void deleteSpace(Connection connection, Statement statement) {
+    	// Responsible for deleting the Space from the system.
     	try {
         	String query;
             scanner = new Scanner(System.in);
@@ -514,6 +510,7 @@ public class InformationProcessingOperations {
     }
 
     public static void deleteDriver(Connection connection, Statement statement) {
+    	// Responsible for deleting the Driver from the system.
     	try {
             String permitID = null;
             scanner = new Scanner(System.in);
@@ -560,51 +557,6 @@ public class InformationProcessingOperations {
             System.out.println("Issue in deleteDriver Operation. Hardware/Inputs are malformed..");
         }
     }
-
-    /**
-    Note: I believe updateZone() does not make sense because ParkingLotID and ZoneID both are primary key.
-    It would give issues when you have the ParkingLotID, ZoneID is in Permit Table. Example Error:
-    (conn=55621) Cannot add or update a child row: a foreign key constraint fails (`jkteluku`.`Permit`, CONSTRAINT `Permit_ibfk_1` FOREIGN KEY (`ParkingLotID`, `ZoneID`) REFERENCES `Zone` (`ParkingLotID`, `ZoneID`) ON DELETE CASCADE ON UPDATE CASCADE)
-
-    public static void updateZone(Connection connection, Statement statement) {
-    	try {
-            Scanner scanner = new Scanner(System.in);
-            
-            System.out.println("You are updating the Zone in a Parking Lot..");
-            System.out.println("Specify the ParkingLotID for the update: ");
-            String parkingLotID = scanner.nextLine();
-            System.out.println("Specify the ZoneID for the update: ");
-            String zoneID = scanner.nextLine();
-            System.out.println("Specify the desired value to update for ZoneID: ");
-            String newZoneID = scanner.nextLine();
-            String query = updateZoneIDQuery;
-
-            try {
-            	connection.setAutoCommit(false);
-            	finalQuery = connection.prepareStatement(query);
-                finalQuery.setString(1, newZoneID);
-                finalQuery.setInt(2, Integer.parseInt(parkingLotID));
-                finalQuery.setString(3, zoneID);
-                finalQuery.executeUpdate();
-                connection.commit();
-                System.out.println("Zone is Updated Successfully!!");
-            } catch (SQLException error) {
-                System.out.println(error.getMessage());
-                System.out.println("Issue in updateZone Operation. Hardware/Inputs are malformed..");
-                connection.rollback();
-                System.out.println("Rollback Complete!");
-            } finally {
-                connection.setAutoCommit(true);
-            }
-    		
-    	} catch (Exception error) {
-            System.out.println("Issue in updateZone Operation. Hardware/Inputs are malformed..");
-        } 
-    }
-     * 
-     */
-
-
 
 }
 

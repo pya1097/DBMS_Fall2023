@@ -5,6 +5,9 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.sql.ResultSet;
  
+/**
+ * This file is responsible for generating reports for the data in the system.
+ */
 public class ReportOperations {
 	private static PreparedStatement finalQuery = null;
     static Scanner scanner = new Scanner(System.in);

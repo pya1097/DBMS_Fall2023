@@ -44,6 +44,7 @@ public class PermitsVehiclesHelper {
 	WolfParkingSystem wolfParkingSystem = new WolfParkingSystem();
 	
 	public static String getDriverStatus(Connection connection, String driverID) {
+		// Used to get the driver status (E, V, S)
 		query = "SELECT Status from Driver where DriverID = ?";
 		try {
 			driverStatusQuery = connection.prepareStatement(query);
@@ -62,6 +63,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static Integer getNumOfRegPermits(Connection connection, String driverID) {
+		// Helper function
 		query = "select count(PermitID) as numOfPermits from Holds NATURAL JOIN  Permit where PermitType NOT IN (\"Special event\",\"ParkandRide\") and DriverID = ? GROUP BY DriverID";
 		
 		try {
@@ -82,6 +84,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static Integer getNumOfSplPermits(Connection connection, String driverID) {
+		// Helper function
 		query = "select count(PermitID) as numOfPermits from Holds NATURAL JOIN  Permit where PermitType IN (\"Special event\",\"ParkandRide\") and DriverID = ? GROUP BY DriverID";
 		
 		try {
@@ -102,6 +105,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static Integer getNumOfVehiclesPerPermit(Connection connection, Integer permitID) {
+		// Helper function
 		query = "select count(CarLicenseNumber) as numOfVehicles from Given where PermitID = ? ";
 		
 		try {
@@ -122,6 +126,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static boolean checkDriver(Connection connection, String driverID) {
+		// Helper function
 		query = "SELECT * from Driver where DriverID = ?";
 		try {
 			checkDriverQuery = connection.prepareStatement(query);
@@ -139,6 +144,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static boolean checkPermit(Connection connection, Integer permitID) {
+		// Helper function
 		query = "SELECT * from Permit where PermitID = ?";
 		try {
 			checkPermitQuery = connection.prepareStatement(query);
@@ -156,6 +162,7 @@ public class PermitsVehiclesHelper {
 	}
 	
  	public static boolean checkVehicle(Connection connection, String carLicenseNumber) {
+ 	// Helper function
 		query = "SELECT * from Vehicle where carLicenseNumber = ?";
 		try {
 			checkVehicleQuery = connection.prepareStatement(query);
@@ -173,6 +180,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void addToOwns(Connection connection, String carLicenseNumber,String driverID) {
+		// Helper function
 		
 			query = "INSERT INTO Owns (CarLicenseNUmber, DriverID) VALUES (?,?);";
 			try {
@@ -195,6 +203,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void addToGiven(Connection connection, Integer permitID, String carLicenseNumber) {
+		// Helper function
 		
 			query = "INSERT INTO Given (PermitID,CarLicenseNUmber) VALUES (?,?);";
 			try {
@@ -217,7 +226,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void addToHolds(Connection connection, Integer permitID, String driverID) {
-		
+		// Helper function
 			query = "INSERT INTO Holds (PermitID,driverID) VALUES (?,?);";
 			try {
             	connection.setAutoCommit(false);
@@ -238,7 +247,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void issuePermit(Connection connection,Statement stmt) {
-		 
+		 // Main Function to Issue the Permit to the New and Existing Drivers.
 		//call driver
 		//call vehicle
 		//update given
@@ -270,16 +279,11 @@ public class PermitsVehiclesHelper {
 			System.out.println("Enter PermitType");
 			String permitType = scanner.nextLine();
 			
-			//System.out.println(driverStatus);
-			//System.out.println(numOfSplPermits);
 			
 			if(permitType.equals("Special event")|| permitType.equals("ParkandRide")) {
 				
 				if(driverStatus.equals("S") || driverStatus.equals("E")) {
-					/*if(numOfRegPermits == 0) {
-						System.out.println("Students|Employee should have regular permit before requesting for special event permit");
-						return;
-					}*/
+
 					if(numOfSplPermits == 1) {
 						System.out.println("Students|Employee can only have 1 permit of this permit type, and it already exists");
 						return;
@@ -313,11 +317,6 @@ public class PermitsVehiclesHelper {
 			//adding vehicle driver entry to owns
 			addToOwns(connection, carLicenseNumber,driverID);
 			
-			
-			//check if that vehicle is added to an existing permit
-			//remove vehicle from permit?? should we add
-			//get spacenumber ??
-			//associated ??
 			
 			System.out.println("Enter ParkingLotID:");
 			Integer parkingLotID = Integer.valueOf(scanner.nextLine());
@@ -389,7 +388,6 @@ public class PermitsVehiclesHelper {
         	try {
 				connection.setAutoCommit(true);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -397,6 +395,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void updatePermit(Connection connection,Statement stmt) {
+		// Updating the permit information.
 		try {
 			String value;
 	        String permitID;
@@ -472,7 +471,7 @@ public class PermitsVehiclesHelper {
 	}
 	
 	public static void deletePermit(Connection connection,Statement stmt) {
-		
+		// Deleting the permit from the system.
 		try {
 			System.out.println("You are deleting a permit from the System..");
             System.out.println("Please provide the permit id  you want to delete: ");

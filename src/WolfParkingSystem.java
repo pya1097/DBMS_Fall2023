@@ -4,6 +4,9 @@ import java.util.Scanner;
 // import MenuOfOperations;
 
 
+/**
+ * Main & Entry Point of the Application
+ */
 public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;

@@ -134,6 +134,7 @@ public class MenuOfOperations {
             System.out.println("(6) Check Validity of Current Parked Vehicle.");
             System.out.println("(7) Update Citation Information.");
             System.out.println("(8) Calculate Fine Amount.");
+            System.out.println("(9) Update the Citation Appeal By Driver.");
             System.out.print("\n\nSelect your choice: ");
 
             int choiceNumber = scanner.nextInt();
@@ -165,6 +166,9 @@ public class MenuOfOperations {
                     break;
                 case 8:
                     CitationHelper.calculateFine(connection, statement);
+                    break;
+                case 9:
+                    CitationHelper.updateCitationAppealByDriver(connection, statement);
                     break;
                 default:
                     System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");

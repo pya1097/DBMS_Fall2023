@@ -79,6 +79,7 @@ public class CitationHelper {
     }
 
     public static void appealCitationByDriver(Connection connection,Statement statement){
+    	// This function is used for appealing on a citation by the driver
        try{
            System.out.println("Please enter the Citation Number");
            Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -100,6 +101,7 @@ public class CitationHelper {
     }
 
     public static void updateCitationAppealByAdmin(Connection connection,Statement statement){
+    	// This function is used for updating the Admin remark in response to driver's citation
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -119,6 +121,7 @@ public class CitationHelper {
     }
 
     public static void updateCitationAppealByDriver(Connection connection,Statement statement){
+    	// This function is used for updating the appeal made by the driver
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -126,7 +129,7 @@ public class CitationHelper {
             System.out.println("Please enter the Driver ID");
             String DriverID = scanner.nextLine();
 
-            System.out.println("Please enter the Admin Remark");
+            System.out.println("Please enter the Driver Remark");
             String DriverRemark = scanner.nextLine();
 
             statement.executeUpdate("Update Appeals set DriverRemark='"+DriverRemark+"' where CitationNumber="+CitationNumber+" and DriverID='"+DriverID+"';");
@@ -138,6 +141,7 @@ public class CitationHelper {
     }
 
     public static void updateCitationPaymentInfo(Connection connection,Statement statement){
+    	// This function is used for updating the payment status and amount of a particular citation.
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -160,6 +164,7 @@ public class CitationHelper {
     }
 
     public static String getDriverIdOfCitation(Statement statement, Integer CitationNumber) {
+    	// This function is used for getting driver ID for a given citation. This is a helper function.
     	String DriverId = " ";
     	try {
     		ResultSet result = statement.executeQuery("SELECT CarLicenseNumber FROM IssuedTo WHERE CitationNumber ="+CitationNumber+";");
@@ -178,6 +183,7 @@ public class CitationHelper {
     }
     
     public static  void updateCitation(Connection connection,Statement statement){
+    	// This function is used for updating a given citation.
         try{
             System.out.println("Please enter the Citation Number");
             Integer CitationNumber = Integer.parseInt(scanner.nextLine());
@@ -236,6 +242,7 @@ public class CitationHelper {
     }
 
     public static void checkValidatiyOfVehicle(Connection connection, Statement statement){
+    	// This function is used for checking if a parked vehicle belongs to if INVALID, EXPIRED OR NO PERMIT Category
         try {
             System.out.println("Please enter the Car License Number:");
             String CarLicenseNumber = scanner.nextLine();
@@ -269,6 +276,7 @@ public class CitationHelper {
     }
 
     public static void retrieveCitationDetails(Connection connection, Statement statement){
+    	// This function is used for fetch the citation details.
         try {
 
             System.out.println("How would you like to retrieve Citation Details?\n");
@@ -327,6 +335,7 @@ public class CitationHelper {
     }
 
     public static void calculateFine( Connection connection, Statement statement){
+    	// This function is used for computing the amount due (fine) against a particular citation.
         try {
             System.out.println("\nPlease enter the Car Lisence Number");
             String CarLicenseNumber = scanner.nextLine();

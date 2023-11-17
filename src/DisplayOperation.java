@@ -2,6 +2,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**
+ * This file is responsible for displaying the data of respective tables of the system.
+ */
 public class DisplayOperation {
     public static void getNoOfCitations(Connection connection, Statement statement) {
     	try {
