@@ -26,84 +26,84 @@ public class ReportOperations {
 			String choice = scanner.nextLine();
     		ResultSet result =null;
     		switch(choice) {
-    		case "1":
-    			result = statement.executeQuery("SELECT ParkingLotId, count(*) as NumberOfCitations from Citation group by ParkingLotId;");
-    			if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Parking Lot Id:"+ result.getString("ParkingLotId") + "\n Number of Citations: "+result.getString("NumberOfCitations"));
-    				}
-    			}
-    			break;
-    		case "2":
-    			result = statement.executeQuery("SELECT MONTH(CitationDate) as MonthNumber, COUNT(*) as NumberOfCitations FROM Citation GROUP BY MONTH(CitationDate);");
-    			if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Month:"+ result.getString("MonthNumber") + "\n Number of Citations:"+result.getString("NumberOfCitations"));
-    				}
-    			}
-    			break;
-    		case "3":
-    			result = statement.executeQuery("SELECT YEAR(CitationDate) AS YearNumber, COUNT(*) AS NumberOfCitations FROM Citation GROUP BY YEAR(CitationDate);");
-    			if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Year:"+ result.getString("YearNumber") + "\n Number of Citations:"+result.getString("NumberOfCitations"));
-    				}
-    			}
-    			break;
-            case "4":
-                System.out.println("\nProvide the Parking Lot ID for which you need the Number of Citations:");  
-                String parkingLotID = scanner.nextLine();
-                result = statement.executeQuery("SELECT ParkingLotId, count(*) as NumberOfCitations FROM Citation WHERE ParkingLotID =" + parkingLotID+";");
-                if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Parking Lot ID:"+ parkingLotID + "\n Number of Citations:"+result.getString("NumberOfCitations"));
-    				}
-    			}
-                break;
-            case "5":
-                System.out.println("\nProvide the Month Number for which you need the Number of Citations:"); 
-                String monthNumber = scanner.nextLine();
-                result = statement.executeQuery("SELECT MONTH(CitationDate) as MonthNumber, COUNT(*) as NumberOfCitations FROM Citation WHERE MONTH(CitationDate) =" +monthNumber+";");
-                if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Month Number:"+ monthNumber + "\n Number of Citations:"+result.getString("NumberOfCitations"));
-    				}
-    			}
-                break;
-            case "6":
-                System.out.println("\nProvide the Year for which you need the Number of Citations:"); 
-                String year = scanner.nextLine();
-                result = statement.executeQuery("SELECT YEAR(CitationDate) as Year, COUNT(*) as NumberOfCitations FROM Citation WHERE YEAR(CitationDate) =" +year+";");
-                if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Year:"+ year + "\n Number of Citations:"+result.getString("NumberOfCitations"));
-    				}
-    			}
-                break;
-    		case "7":
-    			System.out.println("\nProvide a Parking Lot ID For Which You Want Monthly Number of Citations:");
-    			int parkingLotId = scanner.nextInt();
-    			result = statement.executeQuery("SELECT MONTH(CitationDate) AS MonthNumber, COUNT(*) AS NumberOfCitations FROM Citation WHERE ParkingLotID=" + parkingLotId + " GROUP BY MONTH(CitationDate);");
-    			if(!result.isBeforeFirst()) {
-                    System.out.println("No Citation Data is Available!");
-    			} else {
-    				while(result.next()) {
-    					System.out.println("\n Month:"+ result.getString("MonthNumber") + "\n Number of Citations:"+result.getString("NumberOfCitations"));
-    				}
-    			}
-    			break;
+                case "1":
+                    result = statement.executeQuery("SELECT ParkingLotId, count(*) as NumberOfCitations from Citation group by ParkingLotId;");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Parking Lot Id:"+ result.getString("ParkingLotId") + "\n Number of Citations: "+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
+                case "2":
+                    result = statement.executeQuery("SELECT MONTH(CitationDate) as MonthNumber, COUNT(*) as NumberOfCitations FROM Citation GROUP BY MONTH(CitationDate);");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Month:"+ result.getString("MonthNumber") + "\n Number of Citations:"+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
+                case "3":
+                    result = statement.executeQuery("SELECT YEAR(CitationDate) AS YearNumber, COUNT(*) AS NumberOfCitations FROM Citation GROUP BY YEAR(CitationDate);");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Year:"+ result.getString("YearNumber") + "\n Number of Citations:"+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
+                case "4":
+                    System.out.println("\nProvide the Parking Lot ID for which you need the Number of Citations:");  
+                    String parkingLotID = scanner.nextLine();
+                    result = statement.executeQuery("SELECT ParkingLotId, count(*) as NumberOfCitations FROM Citation WHERE ParkingLotID =" + parkingLotID+";");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Parking Lot ID:"+ parkingLotID + "\n Number of Citations:"+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
+                case "5":
+                    System.out.println("\nProvide the Month Number for which you need the Number of Citations:"); 
+                    String monthNumber = scanner.nextLine();
+                    result = statement.executeQuery("SELECT MONTH(CitationDate) as MonthNumber, COUNT(*) as NumberOfCitations FROM Citation WHERE MONTH(CitationDate) =" +monthNumber+";");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Month Number:"+ monthNumber + "\n Number of Citations:"+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
+                case "6":
+                    System.out.println("\nProvide the Year for which you need the Number of Citations:"); 
+                    String year = scanner.nextLine();
+                    result = statement.executeQuery("SELECT YEAR(CitationDate) as Year, COUNT(*) as NumberOfCitations FROM Citation WHERE YEAR(CitationDate) =" +year+";");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Year:"+ year + "\n Number of Citations:"+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
+                case "7":
+                    System.out.println("\nProvide a Parking Lot ID For Which You Want Monthly Number of Citations:");
+                    int parkingLotId = scanner.nextInt();
+                    result = statement.executeQuery("SELECT MONTH(CitationDate) AS MonthNumber, COUNT(*) AS NumberOfCitations FROM Citation WHERE ParkingLotID=" + parkingLotId + " GROUP BY MONTH(CitationDate);");
+                    if(!result.isBeforeFirst()) {
+                        System.out.println("No Citation Data is Available!");
+                    } else {
+                        while(result.next()) {
+                            System.out.println("\n Month:"+ result.getString("MonthNumber") + "\n Number of Citations:"+result.getString("NumberOfCitations"));
+                        }
+                    }
+                    break;
     		}
     	} catch (SQLException e) {
             System.out.println("Issue in getNoOfCitations() Operation. Hardware/Inputs are malformed..");
@@ -240,6 +240,31 @@ public class ReportOperations {
             e.printStackTrace();
         }
     }
+
+    // Overloaded Function
+    public static String getAvailableSpaceNumber(Connection connection, Statement statement, String parkingLotID, String parkingZoneID, String spaceType, String query) {
+        String spaceNumber = "NoSpace";
+        
+    	try {
+    		
+    		ResultSet result = statement.executeQuery(query);
+            if(!result.isBeforeFirst()) {
+                System.out.println("No Space Available!!!");
+            } else {
+                while(result.next()) {
+                    System.out.println("One of the Available Space Number For the Given Requirements: "+ result.getString("SpaceNumber"));
+                    spaceNumber = result.getString("SpaceNumber");
+                }
+            }  
+            
+        } catch (Exception e) {
+            System.out.println("Issue in getAvailableSpaceNumber() Operation. Hardware/Inputs are malformed..");
+            e.printStackTrace();
+        }
+		return spaceNumber;
+    }
+
+
 
     //Case7:
     public static void getNoOfAvailableSpaces(Connection connection, Statement statement) {

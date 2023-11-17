@@ -300,5 +300,34 @@ public class MenuOfOperations {
         
     }
 
+    public void carParkAndExitOperations(Connection connection, Statement stmt) {
+        scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\n\n" + line + menuMessage + " Car Entrace and Exit Operations Menu " + line);
+            System.out.println("(0)  Return to Main Menu.");
+            System.out.println("(1)  Car Entrance to Park.");
+            System.out.println("(2)  Car Exit from Park.");
+            System.out.print("\n\nSelect your choice: ");
+
+            String choiceNumber = scanner.nextLine();
+
+            switch(choiceNumber) {
+                case "0":
+                    System.out.println("\nGoing Back to the Main Menu..\n");
+                    return;
+                case "1":
+                	CarParkOperations.carEntrance(connection, stmt);
+                    break;
+                case "2":
+                    CarParkOperations.carExit(connection, stmt);
+                    break; 
+                default:
+                    System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
+                    break;
+            }
+        }
+        
+    }
+
 
 }

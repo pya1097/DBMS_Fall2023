@@ -411,11 +411,15 @@ public class PermitsVehiclesHelper {
 	        System.out.println("5. Update Expiration Date:");
 	        System.out.println("6. Update Expiration Time:");
 	        System.out.println("7. Update Permit Type:");
+			System.out.println("0. Return to Main Menu.");
 	        option = scanner.nextLine();
 	        System.out.println("Enter the new value:");
 	        value = scanner.nextLine();
 
 	        switch (option) {
+			case "0":
+				System.out.println("\nGoing Back to the Main Menu..\n");
+				return;
             case "1":
                 query = updatePermitPLIDQuery;
                 break;

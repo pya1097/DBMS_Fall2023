@@ -183,12 +183,11 @@ public class DisplayOperation {
         		String ParkingLotID = result.getObject(2).toString();
         		String CitationDate = result.getObject(3).toString();
         		String CitationTime = result.getObject(4).toString();
-        		String CitationType = result.getObject(5).toString();
-        		String CategoryType = result.getObject(6).toString();
-        		String AmountDue = result.getObject(7).toString();
-        		String PaymentStatus = result.getObject(8).toString();
+        		String CategoryType = result.getObject(5).toString();
+        		String AmountDue = result.getObject(6).toString();
+        		String PaymentStatus = result.getObject(7).toString();
 
-                System.out.println("CitationNumber: " + CitationNumber + "; ParkingLotID: " + ParkingLotID+ "; CitationDate: " + CitationDate+ "; CitationTime: " + CitationTime+ "; CitationType: " + CitationType+ "; CategoryType: " + CategoryType+ "; AmountDue: " + AmountDue+ "; PaymentStatus: " + PaymentStatus);
+                System.out.println("CitationNumber: " + CitationNumber + "; ParkingLotID: " + ParkingLotID+ "; CitationDate: " + CitationDate+ "; CitationTime: " + CitationTime+ "; CategoryType: " + CategoryType+ "; AmountDue: " + AmountDue+ "; PaymentStatus: " + PaymentStatus);
 
         	}
     	} catch (Exception e) {

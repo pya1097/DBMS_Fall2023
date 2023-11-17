@@ -8,7 +8,7 @@ public class WolfParkingSystem {
 	static private Connection connection = null;
 	static private Statement stmt = null;
 	static Scanner scanner;
-	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/smashet";
+	static private String url = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jkteluku";
     
 	public static void welcomePrompt() {
 		String projectName = "CSC 540 Project Demo: Wolf Parking Management System";
@@ -53,8 +53,8 @@ public class WolfParkingSystem {
 		 */
 		
 		Class.forName("org.mariadb.jdbc.Driver");
-        String user = "smashet";
-        String password = "200536263";
+        String user = "jkteluku";
+        String password = "200477972";
         connection = DriverManager.getConnection(url, user, password);
         stmt = connection.createStatement();
             	
@@ -76,9 +76,9 @@ public class WolfParkingSystem {
 	
 	private static void prepareDB() {
 	    try {
-			stmt.executeUpdate("DROP DATABASE smashet;");
-			stmt.executeUpdate("CREATE DATABASE smashet;");
-			stmt.executeUpdate("USE smashet;");
+			stmt.executeUpdate("DROP DATABASE jkteluku;");
+			stmt.executeUpdate("CREATE DATABASE jkteluku;");
+			stmt.executeUpdate("USE jkteluku;");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -371,6 +371,7 @@ public class WolfParkingSystem {
 			System.out.println("(4) Display Operations Related to Reports.");
 			System.out.println("(5) Reload The Demo Data Again.");
 			System.out.println("(6) Display the Data Tables.");
+			System.out.println("(7) Car Entrance/Exit Operation.");
 			System.out.println("(0) Exit the Menu.");	
 			System.out.print("\n Select your choice: ");
 			
@@ -392,7 +393,7 @@ public class WolfParkingSystem {
 					menu.displayMaintanenceOperationsOfPermitsAndVehicles(connection,stmt);
 					break;
 				case "3":
-					menu.displayCitationOperations(connection,stmt);
+					menu.displayCitationOperations(connection, stmt);
 					break;
 				case "4":
 					menu.displayReportOperations(connection, stmt);
@@ -404,6 +405,9 @@ public class WolfParkingSystem {
 					break;
 				case "6":
 					menu.displayDataTables(connection, stmt);
+					break;
+				case "7":
+					menu.carParkAndExitOperations(connection, stmt);
 					break;
 				default:
 					System.out.println("\nBroken. Choose the Choices from the Available Options only. Try again...\n");
