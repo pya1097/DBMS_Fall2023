@@ -263,11 +263,11 @@ public class WolfParkingSystem {
 			
 			stmt.executeUpdate("INSERT INTO Space (ParkingLotID, ZoneID, SpaceType, SpaceNumber, AvailabilityStatus) VALUES\n"
 					+"(1, 'A', 'Electric', 1, 'N'),\n"
-					+ "(1, 'A', 'Regular', 1, 'N'),\n"
-					+ "(1, 'A', 'Regular', 2, 'N'),\n"
-					+ "(2, 'AS', 'Compact Car', 1, 'N'),\n"
-					+ "(1, 'V', 'Handicap', 1, 'N'),\n"
-					+ "(1, 'V', 'Regular', 1, 'N');");
+					+ "(2, 'A', 'Regular', 1, 'N'),\n"
+					+ "(3, 'A', 'Regular', 2, 'N'),\n"
+					+ "(1, 'AS', 'Compact Car', 1, 'N'),\n"
+					+ "(2, 'V', 'Handicap', 1, 'N'),\n"
+					+ "(3, 'V', 'Regular', 1, 'N');");
 					
 			stmt.executeUpdate("INSERT INTO Vehicle (CarLicenseNumber,Model,Color,Manufacturer,`Year`) VALUES\n"
 					+ "( 'SBF', 'GT-R-Nismo', 'Pearl White TriCoat', 'Nissan', 2024),\n"

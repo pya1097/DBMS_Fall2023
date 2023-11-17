@@ -161,9 +161,11 @@ public class CitationHelper {
     		ResultSet result = statement.executeQuery("SELECT CarLicenseNumber FROM IssuedTo WHERE CitationNumber ="+CitationNumber+";");
     		while(result.next()) {
     			String CarLicenseNumber = result.getString("CarLicenseNumber");
-    			ResultSet result1 = statement.executeQuery("SELECT DriverID FROM Owns WHERE CarLicenseNumber ="+CarLicenseNumber+";");
-    			DriverId = result1.getString("DriverID");
-    			return DriverId;
+    			ResultSet result1 = statement.executeQuery("SELECT DriverID FROM Owns WHERE CarLicenseNumber ='"+CarLicenseNumber+"';");
+    			while(result1.next()) {
+    				DriverId = result1.getString("DriverID");
+        			return DriverId;
+    			}
     		}
     	} catch(Exception e) {
     		e.printStackTrace();
