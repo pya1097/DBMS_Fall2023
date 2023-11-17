@@ -444,7 +444,7 @@ public class PermitsVehiclesHelper {
 	        try {
 	        	connection.setAutoCommit(false);
 	        	updatePermitQuery = connection.prepareStatement(query);
-	        	System.out.println(query);
+	        	//System.out.println(query);
 	        	updatePermitQuery.setInt(2, Integer.parseInt(permitID));
 	        	updatePermitQuery.setString(1, value);
 	        	updatePermitQuery.executeUpdate();
